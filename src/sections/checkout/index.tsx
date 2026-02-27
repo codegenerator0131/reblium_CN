@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { UserContext } from "@/provider/UserContext";
 import { useCart } from "@/provider/CartContext";
 import tmoApi from "@/lib/tmoApi";
+import { isOrderSuccess, isOrderFailed, ORDER_POLLING_INTERVAL_MS } from "@/Constant";
 import { TMOPaymentMethod, TMOAddress, TMOCartTotals, TMOGeoItem } from "@/types/tmo";
 import { useTranslation } from "react-i18next";
 
@@ -131,13 +132,7 @@ const CheckoutView: React.FC = () => {
           const state = orderDetail.state?.toLowerCase();
 
           // Payment successful statuses
-          if (
-            status === "complete" ||
-            status === "processing" ||
-            status === "paid" ||
-            state === "complete" ||
-            state === "processing"
-          ) {
+          if (isOrderSuccess(status || "") || isOrderSuccess(state || "")) {
             stopPolling();
             setWechatPaymentUrl(null);
             clearCart();
@@ -146,12 +141,7 @@ const CheckoutView: React.FC = () => {
           }
 
           // Payment failed statuses
-          if (
-            status === "canceled" ||
-            status === "cancelled" ||
-            status === "closed" ||
-            status === "failed"
-          ) {
+          if (isOrderFailed(status || "")) {
             stopPolling();
             setWechatPaymentUrl(null);
             toast.error(t("checkout.orderFailed"));
@@ -161,7 +151,7 @@ const CheckoutView: React.FC = () => {
           console.error("Error polling order status:", error);
           // Don't stop polling on transient errors, just log them
         }
-      }, 3000); // Poll every 3 seconds
+      }, ORDER_POLLING_INTERVAL_MS);
     },
     [clearCart, stopPolling, t],
   );

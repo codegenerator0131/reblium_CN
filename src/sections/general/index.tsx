@@ -15,6 +15,7 @@ import { Card } from "@/components/Card";
 import { UserContext } from "@/provider/UserContext";
 import { useTranslation } from "react-i18next";
 import tmoApi from "@/lib/tmoApi";
+import { IMAGE_BASE64_PREFIX, RECENT_PROJECTS_COUNT } from "@/Constant";
 
 const GeneralView: React.FC = () => {
   const { t } = useTranslation("common");
@@ -205,7 +206,7 @@ const GeneralView: React.FC = () => {
             </Button>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {avatars.slice(0, 6).map((project) => (
+            {avatars.slice(0, RECENT_PROJECTS_COUNT).map((project) => (
               <Card
                 key={project.id}
                 className="group relative aspect-square overflow-hidden cursor-pointer hover:ring-2 hover:ring-primary transition-all !py-0"
@@ -213,7 +214,7 @@ const GeneralView: React.FC = () => {
               >
                 {project.image ? (
                   <img
-                    src={`data:image/jpeg;base64,${project?.image}`}
+                    src={`${IMAGE_BASE64_PREFIX}${project?.image}`}
                     alt={project.name}
                     className="w-full h-full object-cover"
                   />

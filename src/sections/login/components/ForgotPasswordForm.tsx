@@ -8,6 +8,7 @@ import MobileInput from "@/components/MobileInput";
 import { Button } from "@/components/Button";
 import tmoApi from "@/lib/tmoApi";
 import { useTranslation } from "react-i18next";
+import { SMS_COUNTDOWN_SECONDS } from "@/Constant";
 
 interface ForgotPasswordFormProps {
   onBack: () => void;
@@ -49,7 +50,7 @@ const ForgotPasswordForm = ({ onBack }: ForgotPasswordFormProps) => {
     try {
       // check=2 is for password reset
       const response = await tmoApi.sendSMSCode(2, mobile, mobilePrefix);
-      setSmsCountdown(60);
+      setSmsCountdown(SMS_COUNTDOWN_SECONDS);
       setStep("verification");
 
       // Check if debug mode returned a code

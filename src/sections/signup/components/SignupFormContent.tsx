@@ -10,6 +10,7 @@ import { Input } from "@/components/Input";
 import MobileInput from "@/components/MobileInput";
 import tmoApi from "@/lib/tmoApi";
 import { useTranslation } from "react-i18next";
+import { SMS_COUNTDOWN_SECONDS } from "@/Constant";
 
 interface SignupFormContentProps {
   onSignupSuccess: (token: string) => void;
@@ -121,7 +122,7 @@ const SignupFormContent: React.FC<SignupFormContentProps> = ({
       // check=1 is for registration
       const response = await tmoApi.sendSMSCode(1, mobile, mobilePrefix);
       setSmsSent(true);
-      setSmsCountdown(60);
+      setSmsCountdown(SMS_COUNTDOWN_SECONDS);
 
       // Check if debug mode returned a code
       if (response.code) {

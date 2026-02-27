@@ -29,9 +29,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
 import CartSidebar from "@/components/CartSidebar";
 import ProductOptionsModal from "@/components/ProductOptionsModal";
 import { TMOCartItemProductOption } from "@/types/tmo";
-
-// License type for purchased products
-type LicenseType = "personal" | "commercial" | "unknown";
+import { parseLicenseSku, isOrderSuccess, LicenseType, STORE_PAGE_SIZE } from "@/Constant";
 
 interface PurchasedProductInfo {
   licenseType: LicenseType;
@@ -62,7 +60,7 @@ const StoreView: React.FC = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const pageSize = 20;
+  const pageSize = STORE_PAGE_SIZE;
   const [isProductOptionsModalOpen, setIsProductOptionsModalOpen] =
     useState(false);
   const [selectedTmoProduct, setSelectedTmoProduct] =
@@ -152,25 +150,7 @@ const StoreView: React.FC = () => {
     }
   }, []);
 
-  // Helper function to extract base SKU and license type from purchased SKU
-  const parsePurchasedSku = (
-    sku: string,
-  ): { baseSku: string; licenseType: LicenseType } => {
-    const lowerSku = sku.toLowerCase();
-    if (lowerSku.endsWith("-personal")) {
-      return {
-        baseSku: sku.slice(0, -9), // Remove "-personal"
-        licenseType: "personal",
-      };
-    } else if (lowerSku.endsWith("-commercial")) {
-      return {
-        baseSku: sku.slice(0, -11), // Remove "-commercial"
-        licenseType: "commercial",
-      };
-    }
-    // If no suffix, treat as unknown (could be base product without license distinction)
-    return { baseSku: sku, licenseType: "unknown" };
-  };
+  const parsePurchasedSku = parseLicenseSku;
 
   // Fetch purchased products from completed orders
   const fetchPurchasedProducts = useCallback(async () => {
@@ -189,7 +169,7 @@ const StoreView: React.FC = () => {
         const status = order.status?.toLowerCase();
         // Include products from all orders except canceled/failed
         // This includes: processing, pending, complete, paid, etc.
-        if (status === "complete" || status === "processing") {
+        if (isOrderSuccess(status || "")) {
           order.items?.forEach((item: any) => {
             if (item.sku) {
               const { baseSku, licenseType } = parsePurchasedSku(item.sku);

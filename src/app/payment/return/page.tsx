@@ -7,6 +7,7 @@ import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import tmoApi from "@/lib/tmoApi";
 import { TMOOrder } from "@/types/tmo";
+import { isOrderSuccess, isOrderPending, isOrderFailed } from "@/Constant";
 
 export default function PaymentReturnPage() {
   const router = useRouter();
@@ -50,13 +51,7 @@ export default function PaymentReturnPage() {
         const orderState = orderData.state?.toLowerCase();
 
         // Success: Order is processing or complete
-        if (
-          orderStatus === "processing" ||
-          orderStatus === "complete" ||
-          orderStatus === "paid" ||
-          orderState === "processing" ||
-          orderState === "complete"
-        ) {
+        if (isOrderSuccess(orderStatus) || isOrderSuccess(orderState || "")) {
           setStatus("success");
           // Clear pending order data
           localStorage.removeItem("pending_order_id");
@@ -64,23 +59,11 @@ export default function PaymentReturnPage() {
           localStorage.removeItem("pending_payment_method");
         }
         // Pending: Order is created but payment not completed
-        else if (
-          orderStatus === "pending" ||
-          orderStatus === "pending_payment" ||
-          orderState === "new" ||
-          orderState === "pending_payment"
-        ) {
+        else if (isOrderPending(orderStatus) || isOrderPending(orderState || "")) {
           setStatus("pending");
         }
         // Failed: Order is canceled, closed, or failed
-        else if (
-          orderStatus === "canceled" ||
-          orderStatus === "cancelled" ||
-          orderStatus === "closed" ||
-          orderStatus === "failed" ||
-          orderState === "canceled" ||
-          orderState === "closed"
-        ) {
+        else if (isOrderFailed(orderStatus) || isOrderFailed(orderState || "")) {
           setStatus("failed");
         }
         // Default to pending for unknown statuses

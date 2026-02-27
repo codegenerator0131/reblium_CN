@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import AvatarCard from "./components/AvatarCard";
 import { LoadingOverlay } from "@/components/LoadingComponent";
 
-import { TEMPLATE_USER_IDS } from "@/Constant";
+import { TEMPLATE_USER_IDS, IMAGE_BASE64_PREFIX } from "@/Constant";
 import { DataLoadingComponent } from "@/components/DataLoading";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
@@ -336,7 +336,7 @@ const ProjectsView: React.FC = () => {
                   onClick={() => handleUseTemplate(avatar?.id)}
                 >
                   <Image
-                    src={`data:image/jpeg;base64,${avatar?.image}`}
+                    src={`${IMAGE_BASE64_PREFIX}${avatar?.image}`}
                     alt={`Avatar`}
                     width={400}
                     height={400}

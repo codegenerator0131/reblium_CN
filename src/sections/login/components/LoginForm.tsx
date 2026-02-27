@@ -10,6 +10,7 @@ import MobileInput from "@/components/MobileInput";
 import { Button } from "@/components/Button";
 import { useTranslation } from "react-i18next";
 import tmoApi from "@/lib/tmoApi";
+import { SMS_COUNTDOWN_SECONDS } from "@/Constant";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
@@ -83,7 +84,7 @@ export default function LoginForm({ onForgotPassword }: LoginFormProps) {
       setIsLoading(true);
       setDebugCode(null);
       const response = await tmoApi.sendSMSCode(2, mobile, mobilePrefix);
-      setSmsCountdown(60);
+      setSmsCountdown(SMS_COUNTDOWN_SECONDS);
 
       // Check if debug mode returned a code
       if (response.code) {

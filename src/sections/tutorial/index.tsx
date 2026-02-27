@@ -3,47 +3,7 @@
 import { Card } from "@/components/Card";
 import { Play } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-const tutorialVideos = [
-  {
-    title: "Tutorial 1",
-    url: "https://youtu.be/l1EWoGhW5OM",
-    embedId: "l1EWoGhW5OM",
-  },
-  {
-    title: "Tutorial 2",
-    url: "https://www.youtube.com/watch?v=qnXMG_Bth08",
-    embedId: "qnXMG_Bth08",
-  },
-  {
-    title: "Tutorial 3",
-    url: "https://youtu.be/fmIBBj_WbIA",
-    embedId: "fmIBBj_WbIA",
-  },
-  {
-    title: "Tutorial 4",
-    url: "https://youtu.be/dNEkHeq8lLY",
-    embedId: "dNEkHeq8lLY",
-  },
-  {
-    title: "Tutorial 5",
-    url: "https://youtu.be/HNk1e8DXXBQ",
-    embedId: "HNk1e8DXXBQ",
-  },
-  {
-    title: "Tutorial 6",
-    url: "https://www.youtube.com/watch?v=tH2vzZwLksw",
-    embedId: "tH2vzZwLksw",
-  },
-];
-
-const showcaseVideos = [
-  {
-    title: "Showcase",
-    url: "https://www.youtube.com/watch?v=3is2LjVvd4Y",
-    embedId: "3is2LjVvd4Y",
-  },
-];
+import { TUTORIAL_VIDEOS, SHOWCASE_VIDEOS } from "@/Constant";
 
 export default function Tutorials() {
   const { t } = useTranslation("common");
@@ -64,7 +24,7 @@ export default function Tutorials() {
           {t("tutorials.gettingStarted")}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tutorialVideos.map((video) => (
+          {TUTORIAL_VIDEOS.map((video) => (
             <Card
               key={video.embedId}
               className="overflow-hidden hover:ring-2 hover:ring-primary transition-all"
@@ -103,7 +63,7 @@ export default function Tutorials() {
           {t("tutorials.showcase")}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {showcaseVideos.map((video) => (
+          {SHOWCASE_VIDEOS.map((video) => (
             <Card
               key={video.embedId}
               className="overflow-hidden hover:ring-2 hover:ring-primary transition-all"

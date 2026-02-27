@@ -16,6 +16,7 @@ import { UserContext } from "@/provider/UserContext";
 import { useCart } from "@/provider/CartContext";
 import tmoApi from "@/lib/tmoApi";
 import { MappedProduct, TMOCartItemProductOption } from "@/types/tmo";
+import { parseLicenseSku, isOrderSuccess, LicenseType } from "@/Constant";
 
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
@@ -26,8 +27,6 @@ import CartSidebar from "@/components/CartSidebar";
 const TMO_IMAGE_BASE_URL =
   process.env.NEXT_PUBLIC_TMO_API_URL || "https://reblium.alpha.tmogroup.asia";
 
-// License type for purchased products
-type LicenseType = "personal" | "commercial" | "unknown";
 
 interface PurchasedProductInfo {
   licenseType: LicenseType;
@@ -62,24 +61,7 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ sku }) => {
     Map<string, PurchasedProductInfo[]>
   >(new Map());
 
-  // Helper function to extract base SKU and license type from purchased SKU
-  const parsePurchasedSku = (
-    purchasedSku: string
-  ): { baseSku: string; licenseType: LicenseType } => {
-    const lowerSku = purchasedSku.toLowerCase();
-    if (lowerSku.endsWith("-personal")) {
-      return {
-        baseSku: purchasedSku.slice(0, -9),
-        licenseType: "personal",
-      };
-    } else if (lowerSku.endsWith("-commercial")) {
-      return {
-        baseSku: purchasedSku.slice(0, -11),
-        licenseType: "commercial",
-      };
-    }
-    return { baseSku: purchasedSku, licenseType: "unknown" };
-  };
+  const parsePurchasedSku = parseLicenseSku;
 
   // Fetch purchased products from completed orders
   const fetchPurchasedProducts = useCallback(async () => {
@@ -95,7 +77,7 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ sku }) => {
 
       ordersArray.forEach((order: any) => {
         const status = order.status?.toLowerCase();
-        if (status === "complete" || status === "processing") {
+        if (isOrderSuccess(status || "")) {
           order.items?.forEach((item: any) => {
             if (item.sku) {
               const { baseSku, licenseType } = parsePurchasedSku(item.sku);

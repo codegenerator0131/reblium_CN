@@ -12,6 +12,7 @@ import { Button } from "@/components/Button";
 import { UserContext } from "@/provider/UserContext";
 import tmoApi from "@/lib/tmoApi";
 import { DataLoadingComponent } from "@/components/DataLoading";
+import { CREDIT_PACKS, getStripePaymentLink } from "@/Constant";
 
 const UIComponent = () => {
   const router = useRouter();
@@ -20,53 +21,10 @@ const UIComponent = () => {
   const [transactions, setTransactions] = useState([]);
   const [isLoadingTransactions, setIsLoadingTransactions] = useState(false);
 
-  const CREDIT_PACKS = [
-    {
-      id: 1,
-      credits: 10,
-      priceUSD: 990,
-      amount: 10,
-      price: 9.9,
-      discountPercent: 0,
-      paymentLink: `https://buy.stripe.com/5kQ7sL7PZ8J13t82V9es000?client_reference_id=${userInfo.id}`,
-    },
-    {
-      id: 2,
-      credits: 50,
-      priceUSD: 4490,
-      amount: 50,
-      price: 44.9,
-      discountPercent: 0,
-      paymentLink: `https://buy.stripe.com/fZuaEXeencZhd3IbrFes001?client_reference_id=${userInfo.id}`,
-    },
-    {
-      id: 3,
-      credits: 100,
-      priceUSD: 7990,
-      amount: 100,
-      price: 79.9,
-      discountPercent: 10,
-      paymentLink: `https://buy.stripe.com/cNi4gz9Y7aR90gWgLZes002?client_reference_id=${userInfo.id}`,
-    },
-    {
-      id: 4,
-      credits: 500,
-      priceUSD: 34990,
-      amount: 500,
-      price: 349.9,
-      discountPercent: 15,
-      paymentLink: `https://buy.stripe.com/6oUaEX4DNgbt3t8dzNes003?client_reference_id=${userInfo.id}`,
-    },
-    {
-      id: 5,
-      credits: 1000,
-      priceUSD: 59990,
-      amount: 1000,
-      price: 599.9,
-      discountPercent: 20,
-      paymentLink: `https://buy.stripe.com/fZu4gz0nxe3l9Rw3Zdes004?client_reference_id=${userInfo.id}`,
-    },
-  ];
+  const creditPacks = CREDIT_PACKS.map((pack) => ({
+    ...pack,
+    paymentLink: getStripePaymentLink(pack.stripeId, userInfo.id),
+  }));
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -130,7 +88,7 @@ const UIComponent = () => {
           {t("credits.purchaseCredits")}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {CREDIT_PACKS.map((pack) => {
+          {creditPacks.map((pack) => {
             const discountedPrice =
               pack.priceUSD * (1 - pack.discountPercent / 100);
             return (

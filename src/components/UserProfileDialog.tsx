@@ -28,8 +28,11 @@ import {
   MapPin,
   Plus,
   Pencil,
+  ArrowLeft,
+  CheckCircle2,
 } from "lucide-react";
 import tmoApi from "@/lib/tmoApi";
+import { SMS_COUNTDOWN_SECONDS } from "@/Constant";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -77,10 +80,17 @@ export const UserProfileDialog = forwardRef<
   const [mobile, setMobile] = useState("");
   const [bio, setBio] = useState("");
 
-  // Password state
-  const [currentPassword, setCurrentPassword] = useState("");
+  // Password reset state (SMS-based)
+  type ResetStep = "idle" | "verification" | "newPassword" | "success";
+  const [resetStep, setResetStep] = useState<ResetStep>("idle");
+  const [resetMobile, setResetMobile] = useState("");
+  const [resetMobilePrefix, setResetMobilePrefix] = useState("86");
+  const [verificationCode, setVerificationCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [smsCountdown, setSmsCountdown] = useState(0);
+  const [isSendingSMS, setIsSendingSMS] = useState(false);
+  const [debugCode, setDebugCode] = useState<string | null>(null);
 
   // Support state
   const [supportMessage, setSupportMessage] = useState("");
@@ -112,6 +122,8 @@ export const UserProfileDialog = forwardRef<
       setLastName(tmoUser.lastname || "");
       setEmail(tmoUser.email || "");
       setMobile(tmoUser.mobile || "");
+      setResetMobile(tmoUser.mobile || "");
+      setResetMobilePrefix((tmoUser.mobile_prefix || "86").replace(/\D/g, ""));
     } else if (userInfo) {
       // Fall back to legacy user data
       const nameParts = (userInfo.name || "").split(" ");
@@ -121,6 +133,14 @@ export const UserProfileDialog = forwardRef<
       setBio(userInfo.bio || "");
     }
   }, [userInfo, tmoUser]);
+
+  // SMS countdown timer for password reset
+  useEffect(() => {
+    if (smsCountdown > 0) {
+      const timer = setTimeout(() => setSmsCountdown(smsCountdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [smsCountdown]);
 
   // Fetch addresses when dialog opens
   useEffect(() => {
@@ -276,7 +296,42 @@ export const UserProfileDialog = forwardRef<
     }
   };
 
-  const handleChangePassword = async () => {
+  const handleSendResetSMS = async () => {
+    if (!resetMobile) {
+      toast.warning(t("userSettings.security.enterMobile"));
+      return;
+    }
+
+    setIsSendingSMS(true);
+    setDebugCode(null);
+    try {
+      // check=2 is for password reset
+      const response = await tmoApi.sendSMSCode(2, resetMobile, resetMobilePrefix);
+      setSmsCountdown(SMS_COUNTDOWN_SECONDS);
+      setResetStep("verification");
+
+      if (response.code) {
+        setDebugCode(response.code);
+        toast.info(`${t("userSettings.security.codeSent")} (Debug: ${response.code})`);
+      } else {
+        toast.success(t("userSettings.security.codeSent"));
+      }
+    } catch (err) {
+      console.error("Send SMS error:", err);
+      toast.error(
+        err instanceof Error ? err.message : t("userSettings.security.sendFailed")
+      );
+    } finally {
+      setIsSendingSMS(false);
+    }
+  };
+
+  const handleResendSMS = async () => {
+    if (smsCountdown > 0) return;
+    await handleSendResetSMS();
+  };
+
+  const handleResetPassword = async () => {
     if (newPassword !== confirmPassword) {
       toast.warning(t("userSettings.toast.passwordMismatch"));
       return;
@@ -288,13 +343,22 @@ export const UserProfileDialog = forwardRef<
 
     setIsChangingPassword(true);
     try {
-      const token = tmoApi.getTMOToken();
-      await tmoApi.changePassword(currentPassword, newPassword, token);
+      const result = await tmoApi.resetPassword(
+        resetMobile,
+        verificationCode,
+        newPassword,
+        resetMobilePrefix,
+        true
+      );
+
+      // If autoLogin is true, the API returns a token
+      if (typeof result === "string") {
+        tmoApi.setTMOToken(result);
+      }
+
       toast.success(t("userSettings.toast.passwordChanged"));
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
       saveUserHistory(tmoUser?.email || userInfo?.email || "", "Password Changed");
+      setResetStep("success");
     } catch (err) {
       console.error(err);
       toast.error(
@@ -305,6 +369,15 @@ export const UserProfileDialog = forwardRef<
     } finally {
       setIsChangingPassword(false);
     }
+  };
+
+  const resetPasswordFlow = () => {
+    setResetStep("idle");
+    setVerificationCode("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setSmsCountdown(0);
+    setDebugCode(null);
   };
 
   const handleSendSupportRequest = async () => {
@@ -619,74 +692,208 @@ export const UserProfileDialog = forwardRef<
             </TabsContent>
 
             <TabsContent value="security" className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="current-password">
-                  {t("userSettings.security.currentPassword")}
-                </Label>
-                <Input
-                  className="text-foreground"
-                  id="current-password"
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder={t(
-                    "userSettings.security.currentPasswordPlaceholder"
-                  )}
-                />
-              </div>
+              {/* Step: Idle - Show mobile and send SMS button */}
+              {resetStep === "idle" && (
+                <>
+                  <div className="space-y-2">
+                    <Label className="text-foreground">
+                      {t("userSettings.security.resetPasswordTitle")}
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      {t("userSettings.security.resetPasswordDescription")}
+                    </p>
+                  </div>
 
-              <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="new-password">
-                  {t("userSettings.security.newPassword")}
-                </Label>
-                <Input
-                  className="text-foreground"
-                  id="new-password"
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder={t(
-                    "userSettings.security.newPasswordPlaceholder"
-                  )}
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label className="text-foreground">
+                      {t("userSettings.security.mobileNumber")}
+                    </Label>
+                    <div className="flex items-center border border-input rounded-md dark:bg-input/30 bg-transparent px-3 h-9 shadow-xs">
+                      <span className="text-muted-foreground text-sm">
+                        +{resetMobilePrefix} {resetMobile}
+                      </span>
+                    </div>
+                  </div>
 
-              <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="confirm-password">
-                  {t("userSettings.security.confirmPassword")}
-                </Label>
-                <Input
-                  className="text-foreground"
-                  id="confirm-password"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder={t(
-                    "userSettings.security.confirmPasswordPlaceholder"
-                  )}
-                />
-              </div>
+                  <Button
+                    onClick={handleSendResetSMS}
+                    disabled={isSendingSMS || !resetMobile}
+                    className="w-full"
+                  >
+                    {isSendingSMS && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    {t("userSettings.security.sendVerificationCode")}
+                  </Button>
+                </>
+              )}
 
-              <DialogFooter className="flex-col sm:flex-row gap-2">
-                <Button
-                  variant="destructive"
-                  onClick={() => setShowDeleteDialog(true)}
-                  className="w-full sm:w-auto"
-                >
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  {t("userSettings.security.deleteAccount")}
-                </Button>
-                <Button
-                  onClick={handleChangePassword}
-                  disabled={isChangingPassword}
-                  className="w-full sm:w-auto"
-                >
-                  {isChangingPassword && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {/* Step: Verification - Enter SMS code */}
+              {resetStep === "verification" && (
+                <>
+                  <div className="space-y-2">
+                    <Label className="text-foreground">
+                      {t("userSettings.security.verificationTitle")}
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      {t("userSettings.security.codeSentTo", {
+                        prefix: resetMobilePrefix,
+                        mobile: resetMobile,
+                      })}
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-foreground" htmlFor="verification-code">
+                      {t("userSettings.security.verificationCode")}
+                    </Label>
+                    <Input
+                      className="text-foreground text-center text-lg tracking-widest"
+                      id="verification-code"
+                      value={verificationCode}
+                      onChange={(e) =>
+                        setVerificationCode(
+                          e.target.value.replace(/\D/g, "").slice(0, 6)
+                        )
+                      }
+                      placeholder="------"
+                      maxLength={6}
+                    />
+                  </div>
+
+                  {/* Debug code display */}
+                  {debugCode && (
+                    <div className="p-2 bg-yellow-900/50 border border-yellow-600 rounded text-yellow-200 text-sm text-center">
+                      Debug Mode - Verification Code: <strong>{debugCode}</strong>
+                    </div>
                   )}
-                  {t("userSettings.security.changePassword")}
-                </Button>
-              </DialogFooter>
+
+                  <div className="flex items-center">
+                    <button
+                      type="button"
+                      onClick={handleResendSMS}
+                      disabled={smsCountdown > 0 || isSendingSMS}
+                      className="text-sm text-blue-600 hover:underline disabled:text-gray-400 disabled:no-underline"
+                    >
+                      {smsCountdown > 0
+                        ? t("userSettings.security.resendIn", { seconds: smsCountdown })
+                        : t("userSettings.security.resendCode")}
+                    </button>
+                  </div>
+
+                  <Button
+                    onClick={() => {
+                      if (!verificationCode || verificationCode.length < 4) {
+                        toast.warning(t("userSettings.security.enterValidCode"));
+                        return;
+                      }
+                      setResetStep("newPassword");
+                    }}
+                    disabled={verificationCode.length < 4}
+                    className="w-full"
+                  >
+                    {t("userSettings.security.continue")}
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    onClick={resetPasswordFlow}
+                    className="w-full"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {t("userSettings.security.back")}
+                  </Button>
+                </>
+              )}
+
+              {/* Step: New Password - Enter new password */}
+              {resetStep === "newPassword" && (
+                <>
+                  <div className="space-y-2">
+                    <Label className="text-foreground">
+                      {t("userSettings.security.newPasswordTitle")}
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      {t("userSettings.security.newPasswordDescription")}
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-foreground" htmlFor="new-password">
+                      {t("userSettings.security.newPassword")}
+                    </Label>
+                    <Input
+                      className="text-foreground"
+                      id="new-password"
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder={t("userSettings.security.newPasswordPlaceholder")}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-foreground" htmlFor="confirm-password">
+                      {t("userSettings.security.confirmPassword")}
+                    </Label>
+                    <Input
+                      className="text-foreground"
+                      id="confirm-password"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder={t("userSettings.security.confirmPasswordPlaceholder")}
+                    />
+                  </div>
+
+                  <Button
+                    onClick={handleResetPassword}
+                    disabled={isChangingPassword}
+                    className="w-full"
+                  >
+                    {isChangingPassword && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    {t("userSettings.security.resetPassword")}
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    onClick={() => setResetStep("verification")}
+                    className="w-full"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {t("userSettings.security.back")}
+                  </Button>
+                </>
+              )}
+
+              {/* Step: Success */}
+              {resetStep === "success" && (
+                <div className="text-center space-y-4 py-4">
+                  <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto" />
+                  <p className="text-foreground font-medium">
+                    {t("userSettings.toast.passwordChanged")}
+                  </p>
+                  <Button onClick={resetPasswordFlow} className="w-full">
+                    {t("userSettings.security.done")}
+                  </Button>
+                </div>
+              )}
+
+              {/* Delete Account - always visible at the bottom */}
+              {resetStep !== "success" && (
+                <div className="pt-4 border-t">
+                  <Button
+                    variant="destructive"
+                    onClick={() => setShowDeleteDialog(true)}
+                    className="w-full sm:w-auto"
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    {t("userSettings.security.deleteAccount")}
+                  </Button>
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="preferences" className="space-y-4 mt-4">

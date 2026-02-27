@@ -1,7 +1,8 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { Theme } from "@/types/type";
+
+type Theme = "light" | "dark";
 
 interface ThemeContextType {
   theme: Theme;

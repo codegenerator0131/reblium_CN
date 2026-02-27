@@ -9,6 +9,12 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import {
+  isOrderSuccess,
+  isOrderFailed,
+  ORDER_POLLING_INTERVAL_MS,
+  ORDERS_PER_PAGE,
+} from "@/Constant";
+import {
   Package,
   Search,
   Filter,
@@ -41,7 +47,7 @@ export default function OrdersView() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState<MappedOrder | null>(null);
-  const ordersPerPage = 10;
+  const ordersPerPage = ORDERS_PER_PAGE;
 
   // WeChat payment state
   const [wechatPaymentUrl, setWechatPaymentUrl] = useState<string | null>(null);
@@ -117,13 +123,7 @@ export default function OrdersView() {
           const state = orderDetail.state?.toLowerCase();
 
           // Payment successful statuses
-          if (
-            status === "complete" ||
-            status === "processing" ||
-            status === "paid" ||
-            state === "complete" ||
-            state === "processing"
-          ) {
+          if (isOrderSuccess(status || "") || isOrderSuccess(state || "")) {
             stopPolling();
             setWechatPaymentUrl(null);
             setWechatPaymentOrderId(null);
@@ -133,12 +133,7 @@ export default function OrdersView() {
           }
 
           // Payment failed statuses
-          if (
-            status === "canceled" ||
-            status === "cancelled" ||
-            status === "closed" ||
-            status === "failed"
-          ) {
+          if (isOrderFailed(status || "")) {
             stopPolling();
             setWechatPaymentUrl(null);
             setWechatPaymentOrderId(null);
@@ -148,7 +143,7 @@ export default function OrdersView() {
           console.error("Error polling order status:", error);
           // Don't stop polling on transient errors, just log them
         }
-      }, 3000); // Poll every 3 seconds
+      }, ORDER_POLLING_INTERVAL_MS);
     },
     [stopPolling, t, loadOrders],
   );

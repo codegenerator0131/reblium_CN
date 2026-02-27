@@ -16,6 +16,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { UserContext } from "@/provider/UserContext";
 import { useSelectedMenuItemStore } from "@/store/selectedMenuItem";
 import { UserProfileDialog } from "./UserProfileDialog";
+import { IMAGE_BASE64_PREFIX } from "@/Constant";
 
 // === Constants for resizable sidebar ===
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -375,7 +376,7 @@ const Sidebar: React.FC = () => {
             {userInfo?.profile_picture ? (
               <Image
                 className="rounded-full flex-shrink-0"
-                src={`data:image/jpeg;base64,${userInfo.profile_picture}`}
+                src={`${IMAGE_BASE64_PREFIX}${userInfo.profile_picture}`}
                 width={40}
                 height={40}
                 alt="User"

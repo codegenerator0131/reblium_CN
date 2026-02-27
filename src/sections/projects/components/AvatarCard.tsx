@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { UserContext } from "@/provider/UserContext";
 import tmoApi from "@/lib/tmoApi";
+import { IMAGE_BASE64_PREFIX } from "@/Constant";
 
 import {
   AlertDialog,
@@ -107,7 +108,7 @@ const AvatarCard: React.FC<AvatarCardProps> = ({
   };
 
   const avatarSrc = avatar.image
-    ? `data:image/jpeg;base64,${avatar.image}`
+    ? `${IMAGE_BASE64_PREFIX}${avatar.image}`
     : "/images/default_avatar.png";
 
   const handleDelete = () => {
