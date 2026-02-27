@@ -1,0 +1,743 @@
+{
+  "general": {
+    "welcome": {
+      "title": "欢迎使用 Reblium Studio",
+      "subtitle": "轻松创建和管理您的虚拟形象项目"
+    },
+    "whatsNew": {
+      "badge": "最新消息",
+      "title": "推出入门包",
+      "description": "您的完美起点,包含必备物品、基础服装和基本配饰",
+      "button": "立即探索"
+    },
+    "stats": {
+      "totalProjects": "项目总数",
+      "creditBalance": "积分余额",
+      "published": "已发布"
+    },
+    "quickActions": {
+      "title": "快速操作",
+      "myAvatars": {
+        "title": "我的虚拟形象",
+        "description": "管理项目和模板"
+      },
+      "browseStore": {
+        "title": "浏览商店",
+        "description": "为虚拟形象购买物品"
+      },
+      "tutorials": {
+        "title": "教程",
+        "description": "学习如何使用 Reblium Studio"
+      },
+      "buyCredits": {
+        "title": "购买积分",
+        "description": "购买积分包"
+      }
+    },
+    "recentProjects": {
+      "title": "最近项目",
+      "viewAll": "查看全部",
+      "noPreview": "无预览"
+    }
+  },
+  "projects": {
+    "title": "我的项目",
+    "subtitle": "您保存的虚拟形象项目",
+    "createNew": "创建新项目",
+    "noProjects": "暂无项目",
+    "createFirst": "创建您的第一个项目",
+    "templates": {
+      "title": "模板虚拟形象",
+      "subtitle": "从预制虚拟形象模板开始",
+      "useTemplate": "使用模板"
+    },
+    "modal": {
+      "limitReached": "您已用完今天所有的免费使用时间。如需更多时间,请购买积分。否则,请等待明天。",
+      "buyCredits": "购买积分",
+      "cancel": "取消"
+    },
+    "actions": {
+      "edit": "编辑/打开",
+      "setProfile": "设为头像",
+      "duplicate": "复制",
+      "export": "导出",
+      "share": "分享",
+      "delete": "删除",
+      "rename": "重命名"
+    },
+    "rename": {
+      "title": "重命名头像",
+      "description": "为此头像输入新名称",
+      "placeholder": "头像名称",
+      "cancel": "取消",
+      "confirm": "重命名"
+    },
+    "delete": {
+      "title": "删除项目",
+      "description": "您确定要删除此项目吗?此操作无法撤销。",
+      "confirm": "删除",
+      "deleting": "删除中...",
+      "cancel": "取消"
+    },
+    "share": {
+      "title": "分享链接",
+      "copyLink": "复制链接",
+      "logoVisibility": "标志可见性",
+      "languageOptions": "语言选项",
+      "default": "(默认)"
+    },
+    "toast": {
+      "profileSuccess": "头像设置成功!",
+      "renameSuccess": "虚拟形象重命名成功",
+      "deleteSuccess": "虚拟形象删除成功",
+      "duplicateSuccess": "虚拟形象复制成功",
+      "linkCopied": "分享链接已复制到剪贴板!",
+      "linkFailed": "复制链接失败!",
+      "logoUpdateFailed": "更新标志可见性失败"
+    }
+  },
+  "store": {
+    "title": "商店",
+    "subtitle": "浏览并购买虚拟形象物品",
+    "search": "按名称或描述搜索物品...",
+    "pack": "礼包",
+    "itemsIncluded": "件物品",
+    "viewAllItems": "查看全部物品 →",
+    "credits": "积分",
+    "owned": "已拥有",
+    "buyPack": "购买礼包",
+    "buy": "购买",
+    "close": "关闭",
+    "noItemsSearch": "未找到匹配的物品",
+    "noItemsCategory": "此分类暂无物品",
+    "upgradeLicense": "升级许可证",
+    "noImage": "无图片",
+    "addToCart": "加入购物车",
+    "personalLicense": "个人版",
+    "upgradeToCommercial": "升级到商业版",
+    "previous": "上一页",
+    "next": "下一页",
+    "pageInfo": "第 {{current}} 页，共 {{total}} 页（{{items}} 件物品）",
+    "packContents": {
+      "title": "{{packName}}",
+      "subtitle": "此礼包包含 {{count}} 件物品"
+    },
+    "confirmPurchase": {
+      "title": "确认购买 - {{itemName}}",
+      "descriptionPack": "此礼包包含 {{count}} 件物品,价格为 {{price}} 积分。",
+      "descriptionPackAction": "所有物品将添加到您的库存中。此操作无法撤销。",
+      "descriptionSingle": "您确定要以 {{price}} 积分购买此物品吗?此操作无法撤销。",
+      "cancel": "取消",
+      "confirm": "确认购买",
+      "purchasing": "购买中..."
+    },
+    "toast": {
+      "notEnoughCredits": "您的积分不足。请先购买积分!",
+      "purchaseFailed": "购买失败",
+      "packPurchaseSuccess": "礼包购买成功!已将 {{count}} 件物品添加到您的库存。",
+      "purchaseSuccess": "购买成功!",
+      "upgradeSuccess": "许可证升级成功!",
+      "downgradeNotAllowed": "无法从商业许可证降级到个人许可证",
+      "sameLicense": "您已拥有此许可证类型",
+      "loadFailed": "从TMO加载产品失败"
+    }
+  },
+  "tutorials": {
+    "title": "教程",
+    "subtitle": "学习如何创建和管理您的虚拟形象项目",
+    "gettingStarted": "入门指南",
+    "showcase": "展示",
+    "watchOnYouTube": "在 YouTube 上观看"
+  },
+  "credits": {
+    "title": "积分",
+    "subtitle": "购买积分以导出资源和购买商店物品",
+    "currentBalance": "当前余额",
+    "credits": "积分",
+    "purchaseCredits": "购买积分",
+    "purchase": "购买",
+    "paymentInformation": "支付信息",
+    "accountEmail": "账户邮箱",
+    "inputEmail": "输入您的邮箱",
+    "cardInformation": "银行卡信息",
+    "nameOnCard": "持卡人姓名",
+    "inputName": "输入您的姓名",
+    "countryOrRegion": "国家或地区",
+    "payNow": "立即支付",
+    "paying": "支付中...",
+    "transactionHistory": "交易记录",
+    "noTransactions": "暂无交易记录",
+    "balance": "余额",
+    "toast": {
+      "invalidEmail": "请输入有效的邮箱地址！",
+      "emailMismatch": "请输入创建账户时使用的相同邮箱！",
+      "fillAllFields": "请填写所有银行卡信息！",
+      "cardCreationFailed": "银行卡创建失败",
+      "paymentIntentFailed": "创建支付意图失败",
+      "paymentVerificationFailed": "支付验证失败",
+      "creditsAdded": "积分购买成功！已添加 {{amount}} 积分",
+      "creditsFailed": "添加积分失败",
+      "paymentSuccess": "成功！已添加 {{credits}} 积分",
+      "downloadingInvoice": "支付成功！正在下载发票..."
+    }
+  },
+  "licenses": {
+    "title": "许可证管理",
+    "subtitle": "管理您的虚拟形象许可证并了解使用权限",
+    "licenseTypes": {
+      "title": "许可证类型",
+      "subtitle": "为您的虚拟形象使用选择合适的许可证"
+    },
+    "personal": {
+      "name": "个人许可证",
+      "description": "仅供个人爱好使用",
+      "details": {
+        "0": "用于个人项目和爱好",
+        "1": "非商业社交媒体内容",
+        "2": "个人作品集和展示",
+        "3": "教育和学习目的",
+        "4": "不得用于商业分发或销售"
+      }
+    },
+    "commercial": {
+      "name": "商业许可证",
+      "description": "用于VR项目、电视广告、自由职业者等商业用途",
+      "details": {
+        "0": "商业VR/AR项目和体验",
+        "1": "电视广告和广告活动",
+        "2": "自由职业客户工作和委托",
+        "3": "企业演示和营销",
+        "4": "商业视频制作",
+        "5": "无限收入 - 无限制"
+      }
+    },
+    "indieGame": {
+      "name": "独立游戏许可证",
+      "description": "年收入超过20万美元的游戏工作室",
+      "details": {
+        "0": "用于商业游戏开发",
+        "1": "PC、主机和移动游戏发行",
+        "2": "多人和在线游戏",
+        "3": "游戏资产集成和定制",
+        "4": "适用于年收入超过20万美元的工作室",
+        "5": "已发布游戏中的免版税使用"
+      }
+    },
+    "whatsIncluded": "包含内容：",
+    "legalDocuments": {
+      "title": "法律文件",
+      "subtitle": "查看我们的条款和许可协议",
+      "termsTitle": "条款与条件",
+      "termsDesc": "一般服务条款",
+      "eulaTitle": "最终用户许可协议",
+      "eulaDesc": "最终用户许可协议"
+    },
+    "activeLicenses": {
+      "title": "您的有效许可证",
+      "subtitle": "通过虚拟形象下载获得的许可证",
+      "licenseKey": "许可证密钥：",
+      "created": "创建时间：",
+      "expires": "过期时间：",
+      "noLicenses": "暂无有效许可证。下载虚拟形象以获取许可证。",
+      "active": "有效",
+      "expired": "已过期"
+    },
+    "stats": {
+      "totalAssets": "总资产",
+      "commercial": "商业",
+      "personal": "个人"
+    },
+    "commercialLicenses": "商业许可证",
+    "personalLicenses": "个人许可证",
+    "commercialDescription": "{{count}}个具有完整商业使用权的{{asset}}",
+    "personalDescription": "{{count}}个供个人使用的{{asset}}",
+    "asset": "资产",
+    "assets": "资产",
+    "commercialLabel": "商业",
+    "personalLabel": "个人",
+    "active": "有效",
+    "pack": "套装",
+    "noLicenses": {
+      "title": "没有有效许可证",
+      "browseStore": "浏览商店"
+    },
+    "signInToView": "请登录以查看您的许可证"
+  },
+  "userSettings": {
+    "title": "用户设置",
+    "subtitle": "管理您的账户设置和偏好",
+    "tabs": {
+      "profile": "个人资料",
+      "addresses": "地址",
+      "security": "安全",
+      "preferences": "偏好设置",
+      "support": "支持"
+    },
+    "addresses": {
+      "title": "保存的地址",
+      "noAddresses": "暂无保存的地址",
+      "addNew": "添加新地址",
+      "edit": "编辑地址",
+      "delete": "地址已删除",
+      "defaultBilling": "默认账单地址"
+    },
+    "profile": {
+      "name": "姓名",
+      "namePlaceholder": "输入您的姓名",
+      "firstName": "名",
+      "firstNamePlaceholder": "输入您的名",
+      "lastName": "姓",
+      "lastNamePlaceholder": "输入您的姓",
+      "email": "邮箱",
+      "emailPlaceholder": "输入您的邮箱",
+      "mobile": "手机号",
+      "mobilePlaceholder": "输入您的手机号",
+      "mobileNote": "手机号无法更改",
+      "bio": "个人简介",
+      "bioPlaceholder": "介绍一下您自己",
+      "credentials": "凭证",
+      "userId": "用户ID：",
+      "memberSince": "注册时间：",
+      "saveChanges": "保存更改"
+    },
+    "security": {
+      "currentPassword": "当前密码",
+      "currentPasswordPlaceholder": "输入当前密码",
+      "newPassword": "新密码",
+      "newPasswordPlaceholder": "输入新密码",
+      "confirmPassword": "确认新密码",
+      "confirmPasswordPlaceholder": "确认新密码",
+      "deleteAccount": "删除账户",
+      "changePassword": "更改密码"
+    },
+    "preferences": {
+      "theme": "主题",
+      "lightMode": "浅色模式",
+      "darkMode": "深色模式",
+      "themeDescription": "为界面选择浅色或深色主题",
+      "language": "语言",
+      "languageDescription": "选择您偏好的界面语言"
+    },
+    "support": {
+      "message": "消息",
+      "messagePlaceholder": "描述您的问题或疑问...",
+      "responseTime": "我们的支持团队将在24-48小时内通过电子邮件回复您的请求。",
+      "sendRequest": "发送请求"
+    },
+    "deleteDialog": {
+      "title": "您确定要这样做吗？",
+      "description": "此操作无法撤销。这将永久删除您的账户并从我们的服务器中删除所有数据。",
+      "cancel": "取消",
+      "confirm": "删除账户"
+    },
+    "toast": {
+      "updateSuccess": "个人资料更新成功",
+      "updateFailed": "更新个人资料失败",
+      "passwordMismatch": "密码不匹配",
+      "passwordTooShort": "密码必须至少8个字符",
+      "passwordChanged": "密码更改成功",
+      "passwordChangeFailed": "密码更改失败",
+      "supportMessageEmpty": "请输入消息",
+      "supportSuccess": "支持请求发送成功",
+      "supportFailed": "请求失败。请稍后再试。"
+    }
+  },
+  "sidebar": {
+    "appName": "Reblium Studio 2",
+    "collapseSidebar": "折叠侧边栏",
+    "admin": {
+      "userManagement": "用户管理",
+      "roleManagement": "角色管理",
+      "userUsage": "用户使用情况",
+      "userHistory": "用户历史记录"
+    },
+    "menu": {
+      "home": "首页",
+      "myAvatars": "我的虚拟形象",
+      "store": "商店",
+      "orders": "订单",
+      "tutorials": "教程",
+      "history": "历史记录",
+      "credits": "积分",
+      "licenses": "许可证",
+      "feed": "动态",
+      "templateAvatars": "模板虚拟形象",
+      "pricing": "定价",
+      "sdkDocs": "SDK 文档",
+      "settings": "设置"
+    },
+    "profile": {
+      "settings": "设置",
+      "signOut": "退出登录"
+    },
+    "exitDialog": {
+      "title": "您确定要退出吗？",
+      "yes": "是",
+      "no": "否"
+    }
+  },
+  "licenseModal": {
+    "chooseTitle": "为\"{{itemName}}\"选择许可证",
+    "upgradeTitle": "为\"{{itemName}}\"升级许可证",
+    "current": "当前：",
+    "license": "许可证",
+    "credits": "点数",
+    "active": "有效",
+    "processing": "处理中...",
+    "currentLicense": "当前许可证",
+    "personalLicense": "个人许可证",
+    "commercialLicense": "商业许可证",
+    "buyPersonal": "购买个人许可证",
+    "buyCommercial": "购买商业许可证",
+    "upgrade": "升级（支付{{credits}}点数）",
+    "downgrade": "降级（退还{{credits}}点数）",
+    "personal": {
+      "feature1": "仅限非商业用途",
+      "feature2": "仅限个人项目",
+      "feature3": "2K纹理",
+      "feature4": "无限导出"
+    },
+    "commercial": {
+      "feature1": "商业使用权",
+      "feature2": "适用于付费项目",
+      "feature3": "4K纹理 + LOD",
+      "feature4": "无限导出",
+      "feature5": "允许团队使用"
+    },
+    "upgradeInfo": {
+      "title": "升级到商业许可证：",
+      "description": "您将支付差价（{{credits}}点数）并获得完整的商业使用权。"
+    },
+    "downgradeInfo": {
+      "title": "降级到个人许可证：",
+      "description": "您将收到{{credits}}点数的退款，但会失去商业使用权。"
+    },
+    "whatsDifference": "有什么区别？",
+    "restore": "已购买？恢复"
+  },
+  "checkout": {
+    "title": "结账",
+    "back": "返回",
+    "backToStore": "返回商店",
+    "cartEmpty": "您的购物车是空的",
+    "addItemsToCheckout": "请添加商品到购物车进行结账",
+    "browseStore": "浏览商店",
+    "loadFailed": "加载结账数据失败",
+    "fillIn": "请填写{{field}}",
+    "fieldRequired": "此字段为必填项",
+    "fillRequiredFields": "请填写所有必填字段",
+    "selectPaymentMethod": "请选择支付方式",
+    "orderPlaced": "订单提交成功!",
+    "orderFailed": "订单提交失败",
+    "paymentCompleted": "支付完成!",
+    "notAuthenticated": "请先登录",
+    "checkoutPrepareFailed": "准备结账失败",
+    "steps": {
+      "review": "确认",
+      "billing": "账单",
+      "payment": "支付",
+      "complete": "完成"
+    },
+    "orderSummary": "订单摘要",
+    "itemsSubtotal": "商品小计",
+    "orderTotal": "订单总计",
+    "subtotal": "小计",
+    "shipping": "运费",
+    "discount": "折扣",
+    "tax": "税费",
+    "total": "总计",
+    "continueToBilling": "继续填写账单信息",
+    "billingAddress": "账单地址",
+    "firstName": "名",
+    "lastName": "姓",
+    "streetAddress": "街道地址",
+    "city": "城市",
+    "postalCode": "邮政编码",
+    "country": "国家",
+    "region": "省/州",
+    "selectRegion": "请选择省/州",
+    "phoneNumber": "电话号码",
+    "countries": {
+      "china": "中国",
+      "usa": "美国",
+      "uk": "英国",
+      "japan": "日本",
+      "korea": "韩国",
+      "singapore": "新加坡",
+      "hongkong": "香港",
+      "taiwan": "台湾"
+    },
+    "paymentMethod": "支付方式",
+    "noPaymentMethods": "暂无可用的支付方式",
+    "placeOrder": "下单",
+    "savedAddresses": "保存的地址",
+    "selectAddress": "选择一个地址或输入新地址",
+    "useNewAddress": "使用新地址",
+    "saveForFuture": "保存此地址以供将来订单使用",
+    "alipay": {
+      "scanToPay": "使用支付宝扫码支付",
+      "order": "订单",
+      "qrNotAvailable": "二维码不可用",
+      "amount": "金额",
+      "completeInApp": "请在支付宝应用中完成支付",
+      "afterPayment": "支付完成后，请点击下方按钮",
+      "completedPayment": "我已完成支付"
+    },
+    "wechat": {
+      "scanToPay": "使用微信扫码支付",
+      "completeInApp": "请在微信应用中完成支付",
+      "waitingForPayment": "等待支付确认中..."
+    },
+    "redirecting": "正在跳转到支付页面",
+    "redirectingToAlipay": "正在跳转到支付宝完成支付...",
+    "redirectingToWeChat": "正在跳转到微信支付完成支付...",
+    "pleaseWait": "请稍候，即将跳转。",
+    "complete": {
+      "title": "订单已确认!",
+      "thankYou": "感谢您的购买。",
+      "orderNumber": "订单号",
+      "viewOrders": "查看订单",
+      "continueShopping": "继续购物"
+    }
+  },
+  "orders": {
+    "title": "我的订单",
+    "subtitle": "查看和管理您的订单历史",
+    "notAuthenticated": "请登录以查看订单",
+    "loadFailed": "加载订单失败",
+    "detailLoadFailed": "加载订单详情失败",
+    "searchPlaceholder": "按订单号搜索...",
+    "statusAll": "全部订单",
+    "statusPending": "待支付",
+    "statusProcessing": "处理中",
+    "statusComplete": "已完成",
+    "statusCanceled": "已取消",
+    "noOrders": "暂无订单",
+    "noOrdersDesc": "您还没有下过任何订单",
+    "startShopping": "开始购物",
+    "orderNumber": "订单",
+    "items": "件商品",
+    "viewDetails": "查看详情",
+    "page": "第",
+    "of": "页，共",
+    "orderItems": "订单商品",
+    "sku": "商品编号",
+    "billingAddress": "账单地址",
+    "orderSummary": "订单摘要",
+    "subtotal": "小计",
+    "shipping": "运费",
+    "tax": "税费",
+    "discount": "折扣",
+    "total": "总计",
+    "paymentMethod": "支付方式",
+    "retryPayment": "重试支付",
+    "redirectingToPayment": "正在跳转到支付页面...",
+    "paymentMethodNotSupported": "不支持此支付方式重试",
+    "retryPaymentFailed": "支付重试失败"
+  },
+  "account": {
+    "title": "账户",
+    "tabs": {
+      "profile": "个人资料",
+      "orders": "订单历史",
+      "addresses": "地址"
+    },
+    "profile": {
+      "joinedSince": "加入时间：",
+      "name": "姓名",
+      "inviteFriends": "邀请朋友",
+      "email": "邮箱",
+      "mobile": "手机号",
+      "password": "密码",
+      "resetPassword": "重置密码",
+      "associatedAccount": "关联账户",
+      "plan": "套餐",
+      "premium": "高级版",
+      "free": "免费版",
+      "planLabel": "套餐",
+      "changePlan": "更改套餐",
+      "deleteAccount": "删除账户",
+      "deleteConfirm": "您确定要删除账户吗？此操作无法撤销。"
+    },
+    "orders": {
+      "title": "订单历史",
+      "noOrders": "暂无订单",
+      "browseStore": "浏览商店"
+    },
+    "addresses": {
+      "title": "保存的地址",
+      "noAddresses": "暂无保存的地址",
+      "defaultBilling": "默认账单地址",
+      "defaultShipping": "默认收货地址"
+    },
+    "modals": {
+      "resetPassword": {
+        "title": "重置密码",
+        "currentPassword": "当前密码",
+        "currentPasswordPlaceholder": "输入当前密码",
+        "newPassword": "新密码",
+        "newPasswordPlaceholder": "输入新密码",
+        "confirmNewPassword": "确认新密码",
+        "confirmNewPasswordPlaceholder": "确认新密码",
+        "submit": "重置密码",
+        "passwordsNoMatch": "新密码不匹配",
+        "success": "密码更新成功!"
+      },
+      "inviteFriend": {
+        "title": "邀请朋友",
+        "friendName": "朋友姓名",
+        "friendNamePlaceholder": "输入朋友姓名",
+        "friendEmail": "朋友邮箱",
+        "friendEmailPlaceholder": "输入朋友邮箱",
+        "submit": "邀请朋友",
+        "enterEmail": "请输入朋友邮箱",
+        "enterName": "请输入朋友姓名"
+      }
+    }
+  },
+  "login": {
+    "title": "登录您的 Reblium 账户",
+    "tabs": {
+      "email": "邮箱",
+      "mobilePassword": "手机号 + 密码",
+      "mobileSms": "手机号 + 短信"
+    },
+    "emailPlaceholder": "输入邮箱地址",
+    "passwordPlaceholder": "输入密码",
+    "smsCodePlaceholder": "输入短信验证码",
+    "sendSms": "发送短信",
+    "rememberMe": "记住我",
+    "loggingIn": "登录中...",
+    "logIn": "登录",
+    "signUp": "注册",
+    "forgotPassword": "忘记密码？",
+    "toast": {
+      "enterMobile": "请输入您的手机号",
+      "debugCode": "调试模式：验证码是 {{code}}",
+      "smsSent": "短信验证码发送成功！",
+      "smsFailed": "短信验证码发送失败",
+      "enterEmailPassword": "请输入邮箱和密码",
+      "enterMobilePassword": "请输入手机号和密码",
+      "enterMobileSms": "请输入手机号和短信验证码",
+      "invalidMethod": "无效的登录方式",
+      "loginSuccess": "登录成功！",
+      "loginFailed": "登录时发生错误，请重试。"
+    }
+  },
+  "forgotPassword": {
+    "title": "重置密码",
+    "mobileDescription": "输入您的手机号，我们将发送验证码给您。",
+    "mobilePlaceholder": "输入手机号",
+    "sendCode": "发送验证码",
+    "sending": "发送中...",
+    "backToLogin": "返回登录",
+    "verificationTitle": "输入验证码",
+    "sentTo": "我们已向 +{{prefix}} {{mobile}} 发送验证码",
+    "codePlaceholder": "输入验证码",
+    "resendIn": "{{seconds}}秒后重新发送",
+    "resendCode": "重新发送",
+    "changeNumber": "更换号码",
+    "continue": "继续",
+    "newPasswordTitle": "创建新密码",
+    "newPasswordDescription": "请在下方输入新密码。",
+    "newPasswordPlaceholder": "新密码",
+    "confirmPasswordPlaceholder": "确认新密码",
+    "resetting": "重置中...",
+    "resetPassword": "重置密码",
+    "back": "返回",
+    "successTitle": "密码重置成功",
+    "successDescription": "您的密码已成功重置。现在可以使用新密码登录。",
+    "enterMobile": "请输入您的手机号",
+    "codeSent": "验证码已发送到您的手机！",
+    "sendFailed": "验证码发送失败",
+    "enterValidCode": "请输入有效的验证码",
+    "enterNewPassword": "请输入新密码",
+    "passwordsNoMatch": "密码不匹配",
+    "passwordMinLength": "密码长度至少为8个字符",
+    "resetFailed": "密码重置失败"
+  },
+  "socialLogin": {
+    "wechatNotConfigured": "微信登录未配置",
+    "wechatLoginFailed": "微信登录失败，请重试。",
+    "orContinueWith": "或继续使用",
+    "connecting": "连接中...",
+    "wechat": "使用微信登录"
+  },
+  "signup": {
+    "title": "创建账户",
+    "firstName": "名",
+    "firstNamePlaceholder": "名",
+    "lastName": "姓",
+    "lastNamePlaceholder": "姓",
+    "email": "邮箱地址",
+    "emailPlaceholder": "输入邮箱",
+    "mobile": "手机号码",
+    "mobilePlaceholder": "手机号码",
+    "dob": "出生日期（可选）",
+    "password": "密码",
+    "passwordPlaceholder": "输入密码",
+    "confirmPassword": "确认密码",
+    "confirmPasswordPlaceholder": "确认密码",
+    "sendingCode": "发送验证码中...",
+    "signUp": "注册",
+    "termsAgreement": "创建账户即表示您同意我们的隐私政策、条款与条件和最终用户许可协议。",
+    "alreadyHaveAccount": "已有账户？",
+    "logIn": "登录",
+    "verificationTitle": "验证您的手机",
+    "verificationSentTo": "我们已向 +{{prefix}} {{mobile}} 发送验证码",
+    "verificationCode": "验证码",
+    "enterCode": "输入验证码",
+    "resendIn": "{{seconds}}秒后重新发送",
+    "resendCode": "重新发送",
+    "changeMobile": "更换手机号",
+    "registering": "注册中...",
+    "completeRegistration": "完成注册",
+    "errors": {
+      "enterFirstName": "请输入您的名。",
+      "enterLastName": "请输入您的姓。",
+      "validEmail": "请输入有效的邮箱地址。",
+      "enterMobile": "请输入您的手机号。",
+      "enterMobileFirst": "请先输入您的手机号。",
+      "passwordsNoMatch": "密码不匹配。",
+      "validCode": "请输入有效的验证码。"
+    },
+    "toast": {
+      "codeSent": "验证码已发送到您的手机！",
+      "sendFailed": "验证码发送失败",
+      "registrationSuccess": "注册成功！正在为您登录...",
+      "registrationFailed": "注册失败，请重试。"
+    }
+  },
+  "cart": {
+    "title": "购物车",
+    "closeCart": "关闭购物车",
+    "empty": "您的购物车是空的",
+    "addItemsToStart": "添加商品开始购物",
+    "sku": "SKU：",
+    "quantity": "数量",
+    "decreaseQuantity": "减少数量",
+    "increaseQuantity": "增加数量",
+    "removeItem": "移除商品",
+    "subtotal": "小计",
+    "discount": "折扣",
+    "tax": "税费",
+    "total": "总计",
+    "proceedToCheckout": "前往结账",
+    "remove": "移除"
+  },
+  "productOptions": {
+    "selectOption": "选择{{option}}",
+    "priceModifier": "(+${{price}})",
+    "maxCharacters": "最多{{max}}个字符",
+    "pleaseSelect": "请选择{{option}}",
+    "noOptions": "暂无可用选项",
+    "addToCart": "加入购物车",
+    "upgradeToCommercial": "升级到商业版",
+    "upgradeLicense": "升级许可证"
+  },
+  "productDetail": {
+    "backToStore": "返回商店",
+    "addToCart": "加入购物车",
+    "loadError": "加载产品失败"
+  }
+}
