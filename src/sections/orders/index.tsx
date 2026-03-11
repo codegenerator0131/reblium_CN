@@ -386,8 +386,7 @@ export default function OrdersView() {
                         </span>
                       </div>
                       <div className="flex items-center gap-2 font-semibold text-foreground">
-                        <DollarSign className="h-4 w-4" />
-                        <span>${order.grandTotal.toFixed(2)}</span>
+                        <span>¥{order.grandTotal.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
@@ -504,10 +503,10 @@ export default function OrdersView() {
                         </div>
                         <div className="text-right">
                           <p className="font-semibold text-foreground">
-                            ${item.price.toFixed(2)} x {item.qty}
+                            ¥{item.price.toFixed(2)} x {item.qty}
                           </p>
                           <p className="text-sm text-muted-foreground">
-                            ${item.subtotal.toFixed(2)}
+                            ¥{item.subtotal.toFixed(2)}
                           </p>
                         </div>
                       </div>
@@ -552,31 +551,31 @@ export default function OrdersView() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-muted-foreground">
                     <span>{t("orders.subtotal")}</span>
-                    <span>${selectedOrder.subtotal.toFixed(2)}</span>
+                    <span>¥{selectedOrder.subtotal.toFixed(2)}</span>
                   </div>
                   {selectedOrder.shippingAmount > 0 && (
                     <div className="flex justify-between text-muted-foreground">
                       <span>{t("orders.shipping")}</span>
-                      <span>${selectedOrder.shippingAmount.toFixed(2)}</span>
+                      <span>¥{selectedOrder.shippingAmount.toFixed(2)}</span>
                     </div>
                   )}
                   {selectedOrder.taxAmount > 0 && (
                     <div className="flex justify-between text-muted-foreground">
                       <span>{t("orders.tax")}</span>
-                      <span>${selectedOrder.taxAmount.toFixed(2)}</span>
+                      <span>¥{selectedOrder.taxAmount.toFixed(2)}</span>
                     </div>
                   )}
                   {selectedOrder.discountAmount !== 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>{t("orders.discount")}</span>
                       <span>
-                        -${Math.abs(selectedOrder.discountAmount).toFixed(2)}
+                        -¥{Math.abs(selectedOrder.discountAmount).toFixed(2)}
                       </span>
                     </div>
                   )}
                   <div className="flex justify-between text-lg font-bold text-foreground pt-2 border-t">
                     <span>{t("orders.total")}</span>
-                    <span>${selectedOrder.grandTotal.toFixed(2)}</span>
+                    <span>¥{selectedOrder.grandTotal.toFixed(2)}</span>
                   </div>
                 </div>
 

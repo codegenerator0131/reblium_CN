@@ -106,7 +106,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ className }) => {
                       SKU: {item.sku}
                     </p>
                     <p className="text-sm font-semibold text-primary mt-1">
-                      ${item.price.toFixed(2)}
+                      ¥{item.price.toFixed(2)}
                     </p>
 
                     {/* Options */}
@@ -161,25 +161,25 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ className }) => {
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">{t("cart.subtotal")}</span>
                       <span className="text-foreground">
-                        ${displaySubtotal.toFixed(2)}
+                        ¥{displaySubtotal.toFixed(2)}
                       </span>
                     </div>
                     {discountAmount !== 0 && (
                       <div className="flex justify-between text-sm text-green-600">
                         <span>{t("cart.discount")}</span>
-                        <span>-${Math.abs(discountAmount).toFixed(2)}</span>
+                        <span>-¥{Math.abs(discountAmount).toFixed(2)}</span>
                       </div>
                     )}
                     {taxAmount > 0 && (
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">{t("cart.tax")}</span>
-                        <span className="text-foreground">${taxAmount.toFixed(2)}</span>
+                        <span className="text-foreground">¥{taxAmount.toFixed(2)}</span>
                       </div>
                     )}
                     <div className="flex justify-between font-semibold text-lg pt-2 border-t">
                       <span className="text-foreground">{t("cart.total")}</span>
                       <span className="text-primary">
-                        ${displayTotal.toFixed(2)}
+                        ¥{displayTotal.toFixed(2)}
                       </span>
                     </div>
                   </>

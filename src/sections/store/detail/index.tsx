@@ -311,7 +311,7 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ sku }) => {
 
             {/* Price */}
             <div className="text-3xl font-bold text-primary">
-              ${product.price?.toFixed(2) || "0.00"}
+              ¥{product.price?.toFixed(2) || "0.00"}
             </div>
 
             {/* Description */}

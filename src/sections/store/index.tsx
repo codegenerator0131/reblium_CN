@@ -478,7 +478,7 @@ const StoreView: React.FC = () => {
                           <div className="pt-3 border-t space-y-2">
                             <div className="text-center">
                               <span className="text-lg font-bold text-primary">
-                                ${product.price?.toFixed(2) || "0.00"}
+                                ¥{product.price?.toFixed(2) || "0.00"}
                               </span>
                             </div>
 

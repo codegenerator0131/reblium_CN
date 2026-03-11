@@ -763,11 +763,11 @@ const CheckoutView: React.FC = () => {
                       {item.name}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Qty: {item.qty} x ${item.price.toFixed(2)}
+                      Qty: {item.qty} x ¥{item.price.toFixed(2)}
                     </p>
                   </div>
                   <p className="font-semibold text-foreground">
-                    ${item.subtotal.toFixed(2)}
+                    ¥{item.subtotal.toFixed(2)}
                   </p>
                 </div>
               ))}
@@ -780,7 +780,7 @@ const CheckoutView: React.FC = () => {
                   {t("checkout.itemsSubtotal")}
                 </span>
                 <span className="text-foreground font-medium">
-                  ${calculateCartSubtotal().toFixed(2)}
+                  ¥{calculateCartSubtotal().toFixed(2)}
                 </span>
               </div>
             </div>
@@ -797,7 +797,7 @@ const CheckoutView: React.FC = () => {
                   {t("checkout.subtotal")}
                 </span>
                 <span className="text-foreground">
-                  ${displaySubtotal.toFixed(2)}
+                  ¥{displaySubtotal.toFixed(2)}
                 </span>
               </div>
               {displayShipping > 0 && (
@@ -806,14 +806,14 @@ const CheckoutView: React.FC = () => {
                     {t("checkout.shipping")}
                   </span>
                   <span className="text-foreground">
-                    ${displayShipping.toFixed(2)}
+                    ¥{displayShipping.toFixed(2)}
                   </span>
                 </div>
               )}
               {displayDiscount < 0 && (
                 <div className="flex justify-between text-green-600">
                   <span>{t("checkout.discount")}</span>
-                  <span>-${Math.abs(displayDiscount).toFixed(2)}</span>
+                  <span>-¥{Math.abs(displayDiscount).toFixed(2)}</span>
                 </div>
               )}
               {displayTax > 0 && (
@@ -822,14 +822,14 @@ const CheckoutView: React.FC = () => {
                     {t("checkout.tax")}
                   </span>
                   <span className="text-foreground">
-                    ${displayTax.toFixed(2)}
+                    ¥{displayTax.toFixed(2)}
                   </span>
                 </div>
               )}
               <div className="flex justify-between pt-3 border-t font-bold text-lg">
                 <span className="text-foreground">{t("checkout.total")}</span>
                 <span className="text-primary">
-                  ${displayGrandTotal.toFixed(2)}
+                  ¥{displayGrandTotal.toFixed(2)}
                 </span>
               </div>
             </div>
@@ -1131,7 +1131,7 @@ const CheckoutView: React.FC = () => {
                   {t("checkout.subtotal")}
                 </span>
                 <span className="text-foreground">
-                  ${displaySubtotal.toFixed(2)}
+                  ¥{displaySubtotal.toFixed(2)}
                 </span>
               </div>
               {displayShipping > 0 && (
@@ -1140,14 +1140,14 @@ const CheckoutView: React.FC = () => {
                     {t("checkout.shipping")}
                   </span>
                   <span className="text-foreground">
-                    ${displayShipping.toFixed(2)}
+                    ¥{displayShipping.toFixed(2)}
                   </span>
                 </div>
               )}
               {displayDiscount < 0 && (
                 <div className="flex justify-between text-sm text-green-600">
                   <span>{t("checkout.discount")}</span>
-                  <span>-${Math.abs(displayDiscount).toFixed(2)}</span>
+                  <span>-¥{Math.abs(displayDiscount).toFixed(2)}</span>
                 </div>
               )}
               {displayTax > 0 && (
@@ -1156,14 +1156,14 @@ const CheckoutView: React.FC = () => {
                     {t("checkout.tax")}
                   </span>
                   <span className="text-foreground">
-                    ${displayTax.toFixed(2)}
+                    ¥{displayTax.toFixed(2)}
                   </span>
                 </div>
               )}
               <div className="flex justify-between font-bold text-lg pt-2 border-t">
                 <span className="text-foreground">{t("checkout.total")}</span>
                 <span className="text-primary">
-                  ${displayGrandTotal.toFixed(2)}
+                  ¥{displayGrandTotal.toFixed(2)}
                 </span>
               </div>
             </div>
@@ -1177,7 +1177,7 @@ const CheckoutView: React.FC = () => {
               {submitting ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
               ) : (
-                `${t("checkout.placeOrder")} - $${displayGrandTotal.toFixed(2)}`
+                `${t("checkout.placeOrder")} - ¥${displayGrandTotal.toFixed(2)}`
               )}
             </Button>
           </Card>

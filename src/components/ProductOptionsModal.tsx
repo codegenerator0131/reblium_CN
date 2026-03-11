@@ -152,7 +152,7 @@ const ProductOptionsModal: React.FC<ProductOptionsModalProps> = ({
                 <option key={value.option_type_id} value={value.option_type_id}>
                   {value.title}
                   {value.price > 0 && (
-                    <> (+${value.price.toFixed(2)})</>
+                    <> (+¥{value.price.toFixed(2)})</>
                   )}
                 </option>
               ))}
@@ -193,7 +193,7 @@ const ProductOptionsModal: React.FC<ProductOptionsModalProps> = ({
                     {value.title}
                     {value.price > 0 && (
                       <span className="text-muted-foreground ml-2">
-                        (+${value.price.toFixed(2)})
+                        (+¥{value.price.toFixed(2)})
                       </span>
                     )}
                   </span>
@@ -238,7 +238,7 @@ const ProductOptionsModal: React.FC<ProductOptionsModalProps> = ({
                     {value.title}
                     {value.price > 0 && (
                       <span className="text-muted-foreground ml-2">
-                        (+${value.price.toFixed(2)})
+                        (+¥{value.price.toFixed(2)})
                       </span>
                     )}
                   </span>
@@ -326,7 +326,7 @@ const ProductOptionsModal: React.FC<ProductOptionsModalProps> = ({
                 {productName}
               </h2>
               <p className="text-lg font-bold text-primary mt-1">
-                ${totalPrice.toFixed(2)}
+                ¥{totalPrice.toFixed(2)}
               </p>
             </div>
           </div>
@@ -364,8 +364,8 @@ const ProductOptionsModal: React.FC<ProductOptionsModalProps> = ({
               <ShoppingCart className="h-4 w-4 mr-2" />
             )}
             {isUpgradeMode
-              ? `${t("productOptions.upgradeToCommercial")} - $${totalPrice.toFixed(2)}`
-              : `${t("productOptions.addToCart")} - $${totalPrice.toFixed(2)}`}
+              ? `${t("productOptions.upgradeToCommercial")} - ¥${totalPrice.toFixed(2)}`
+              : `${t("productOptions.addToCart")} - ¥${totalPrice.toFixed(2)}`}
           </Button>
         </div>
       </div>

@@ -348,12 +348,12 @@ const Sidebar: React.FC = () => {
               onClick={() => handleMenuItemClick("tutorial")}
               isSelected={selected === "tutorial"}
             />
-            <MenuItem
+            {/* <MenuItem
               icon={CiCreditCard1}
               label={t("sidebar.menu.credits")}
               onClick={() => handleMenuItemClick("credits")}
               isSelected={selected === "credits"}
-            />
+            /> */}
             <MenuItem
               icon={LuFileKey}
               label={t("sidebar.menu.licenses")}
