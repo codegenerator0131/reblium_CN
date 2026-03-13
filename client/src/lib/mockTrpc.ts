@@ -51,7 +51,7 @@ function createStore<T>(initialData: T) {
 }
 
 // Mutable stores for data that can change via mutations
-const authUserStore = createStore<typeof mockUser | null>(mockUser);
+const authUserStore = createStore<typeof mockUser | null>(null);
 const avatarProjectsStore = createStore([...mockAvatarProjects]);
 const cartItemsStore = createStore([...mockCartItems]);
 const featureRequestsStore = createStore([...mockFeatureRequests]);

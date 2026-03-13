@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import ImageCarousel from "@/components/ImageCarousel";
 
 const CATEGORY_LABELS_ZH: Record<string, string> = {
@@ -27,7 +28,16 @@ export default function ProductDetail() {
   const [selectedLicense, setSelectedLicense] = useState<"personal" | "commercial">("personal");
 
   const itemQuery = trpc.store.getItemById.useQuery({ itemId: parseInt(itemId || "0") });
-  const addToCartMutation = trpc.cart.addItem.useMutation();
+  const utils = trpc.useUtils();
+  const addToCartMutation = trpc.cart.addItem.useMutation({
+    onSuccess: () => {
+      utils.cart.getItems.invalidate();
+      toast.success(t('store.addedToCart'));
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
   if (itemQuery.isLoading) {
     return (

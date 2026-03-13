@@ -18,7 +18,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
+import { mockSignIn } from "@/lib/mockTrpc";
 import { useIsMobile } from "@/hooks/useMobile";
 import { LayoutDashboard, LogOut, PanelLeft, Users, Store, CreditCard, Settings, BookOpen, Palette, Download, ShoppingCart, Package, HelpCircle, Upload, CheckSquare, Trello, Layers, Newspaper, Sun, Moon } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
@@ -99,93 +99,6 @@ export default function DashboardLayout({
     return <DashboardLayoutSkeleton />
   }
 
-  // Use mock user for public mockup mode - bypass login requirement
-  const displayUser = user || {
-    id: "demo-user",
-    email: "demo@genji.studio",
-    name: "Demo User",
-    role: "user" as const,
-  };
-
-  if (false && !user) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
-          <div className="flex flex-col items-center gap-6">
-            <div className="relative group">
-              <div className="relative">
-                <img
-                  src="/assets/images/logo.png"
-                  alt="Genji Logo"
-                  className="h-24 w-24 rounded-lg object-contain"
-                />
-              </div>
-            </div>
-            <div className="text-center space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight">{APP_TITLE}</h1>
-              <p className="text-sm text-muted-foreground">
-                Create and manage your avatar projects
-              </p>
-            </div>
-          </div>
-          
-          <div className="w-full space-y-4">
-            <Button
-              onClick={() => {
-                window.location.href = getLoginUrl();
-              }}
-              size="lg"
-              className="w-full shadow-lg hover:shadow-xl transition-all bg-cyan-500 hover:bg-cyan-600 text-black font-semibold"
-            >
-              Sign in with Manus
-            </Button>
-            
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border"></div>
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-3">
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full hover:bg-accent transition-colors"
-                onClick={() => alert('WeChat login - Coming soon')}
-                title="WeChat"
-              >
-                <span className="text-lg">微信</span>
-              </Button>
-              
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full hover:bg-accent transition-colors"
-                onClick={() => alert('QQ login - Coming soon')}
-                title="QQ"
-              >
-                <span className="text-lg">QQ</span>
-              </Button>
-              
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full hover:bg-accent transition-colors"
-                onClick={() => alert('Sina Weibo login - Coming soon')}
-                title="Sina Weibo"
-              >
-                <span className="text-lg">微博</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <SidebarProvider
       style={
@@ -223,14 +136,6 @@ function DashboardLayoutContent({
   const activeMenuItem = menuItems.find((item: any) => item.path === location);
   const isMobile = useIsMobile();
   
-  // Use mock user for public mockup mode
-  const displayUser = user || {
-    id: "demo-user",
-    email: "demo@genji.studio",
-    name: "Demo User",
-    role: "user" as const,
-  };
-
   useEffect(() => {
     if (isCollapsed) {
       setIsResizing(false);
@@ -394,7 +299,7 @@ function DashboardLayoutContent({
                     <span>{t('nav.settings')}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={logout}
+                    onClick={() => { logout().then(() => setLocation("/")); }}
                     className="cursor-pointer text-destructive focus:text-destructive"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
@@ -404,7 +309,7 @@ function DashboardLayoutContent({
               </DropdownMenu>
             ) : (
               <Button
-                onClick={() => { window.location.href = getLoginUrl(); }}
+                onClick={() => { mockSignIn(); setLocation("/"); }}
                 className="w-full bg-cyan-500 hover:bg-cyan-600 text-black font-semibold group-data-[collapsible=icon]:w-9 group-data-[collapsible=icon]:p-0"
                 size="sm"
               >
