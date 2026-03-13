@@ -1,9 +1,0 @@
-{
-  "query": "UPDATE storeItems SET thumbnailUrl = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/darklady_front_3d077c87.jpg', thumbnailKey = 'darklady_front_3d077c87.jpg', image2Url = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/darklady_quarter_5d381fa9.jpg', image2Key = 'darklady_quarter_5d381fa9.jpg', image3Url = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/darklady_back_73a8328a.jpg', image3Key = 'darklady_back_73a8328a.jpg' WHERE name = 'Dark Lady Outfit';",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4JyWN7J3MBWttr5.926298ab7e51 --database iq22PtDDLnfa9zucwBEcgk --execute UPDATE storeItems SET thumbnailUrl = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/darklady_front_3d077c87.jpg', thumbnailKey = 'darklady_front_3d077c87.jpg', image2Url = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/darklady_quarter_5d381fa9.jpg', image2Key = 'darklady_quarter_5d381fa9.jpg', image3Url = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/darklady_back_73a8328a.jpg', image3Key = 'darklady_back_73a8328a.jpg' WHERE name = 'Dark Lady Outfit';",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 59
-}

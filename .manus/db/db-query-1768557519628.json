@@ -1,9 +1,0 @@
-{
-  "query": "UPDATE storeItems SET polyCount = 17500 WHERE category IN ('clothing');\nUPDATE storeItems SET polyCount = 10000 WHERE category IN ('face', 'face_fantasy', 'face_human');\nUPDATE storeItems SET polyCount = 7500 WHERE category IN ('accessories');\nUPDATE storeItems SET polyCount = 15000 WHERE category IN ('hair');\nUPDATE storeItems SET polyCount = 20000 WHERE category IN ('animations', 'packs');",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4JyWN7J3MBWttr5.926298ab7e51 --database iq22PtDDLnfa9zucwBEcgk --execute UPDATE storeItems SET polyCount = 17500 WHERE category IN ('clothing');\nUPDATE storeItems SET polyCount = 10000 WHERE category IN ('face', 'face_fantasy', 'face_human');\nUPDATE storeItems SET polyCount = 7500 WHERE category IN ('accessories');\nUPDATE storeItems SET polyCount = 15000 WHERE category IN ('hair');\nUPDATE storeItems SET polyCount = 20000 WHERE category IN ('animations', 'packs');",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 146
-}

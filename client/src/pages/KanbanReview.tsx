@@ -24,15 +24,15 @@ interface Submission {
 
 // Database store items with thumbnails - used as placeholder images
 const storeItemImages: Record<string, string> = {
-  "Futuristic Combat Suit": "https://images.unsplash.com/photo-1578926078328-123456789012?w=400&h=400&fit=crop",
-  "Cyberpunk Hair Pack": "https://images.unsplash.com/photo-1578926078328-123456789013?w=400&h=400&fit=crop",
-  "Elven Face Customization": "https://images.unsplash.com/photo-1578926078328-123456789014?w=400&h=400&fit=crop",
-  "Dragon Wings Accessory": "https://images.unsplash.com/photo-1578926078328-123456789015?w=400&h=400&fit=crop",
-  "Casual Outfit Pack": "https://images.unsplash.com/photo-1578926078328-123456789016?w=400&h=400&fit=crop",
-  "Glitchy Animations": "https://images.unsplash.com/photo-1578926078328-123456789017?w=400&h=400&fit=crop",
-  "Sci-Fi Pack": "https://images.unsplash.com/photo-1578926078328-123456789018?w=400&h=400&fit=crop",
-  "Fantasy Pack": "https://images.unsplash.com/photo-1578926078328-123456789019?w=400&h=400&fit=crop",
-  "Starters Pack": "https://images.unsplash.com/photo-1578926078328-123456789020?w=400&h=400&fit=crop",
+  "Futuristic Combat Suit": "/assets/images/kanban-1.jpg",
+  "Cyberpunk Hair Pack": "/assets/images/kanban-2.jpg",
+  "Elven Face Customization": "/assets/images/kanban-3.jpg",
+  "Dragon Wings Accessory": "/assets/images/kanban-4.jpg",
+  "Casual Outfit Pack": "/assets/images/kanban-5.jpg",
+  "Glitchy Animations": "/assets/images/kanban-6.jpg",
+  "Sci-Fi Pack": "/assets/images/kanban-7.jpg",
+  "Fantasy Pack": "/assets/images/kanban-8.jpg",
+  "Starters Pack": "/assets/images/kanban-9.jpg",
 };
 
 export default function KanbanReview() {

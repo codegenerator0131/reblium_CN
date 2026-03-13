@@ -1,1 +1,0 @@
-ALTER TABLE `creditPacks` ADD `discountPercent` int DEFAULT 0 NOT NULL;

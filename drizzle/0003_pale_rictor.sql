@@ -1,1 +1,0 @@
-ALTER TABLE `storeItems` MODIFY COLUMN `category` enum('clothing','hair','face','accessories','animations','packs') NOT NULL;

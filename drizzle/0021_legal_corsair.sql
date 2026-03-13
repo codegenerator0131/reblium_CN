@@ -1,1 +1,0 @@
-ALTER TABLE `featureRequests` ADD `userId` int NOT NULL;

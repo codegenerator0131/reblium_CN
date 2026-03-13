@@ -115,7 +115,7 @@ export default function DashboardLayout({
             <div className="relative group">
               <div className="relative">
                 <img
-                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/pswLrQGbiFtIAmRK.png"
+                  src="/assets/images/logo.png"
                   alt="Genji Logo"
                   className="h-24 w-24 rounded-lg object-contain"
                 />
@@ -280,7 +280,7 @@ function DashboardLayoutContent({
               {isCollapsed ? (
                 <div className="relative h-8 w-8 shrink-0 group">
                   <img
-                    src="https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/pasted_file_mDyGx8_image_080f602f.png"
+                    src="/assets/images/reblium-hero.png"
                     className="h-8 w-8 rounded-md object-contain dark:invert"
                     alt="Genji Logo"
                   />
@@ -295,7 +295,7 @@ function DashboardLayoutContent({
                 <>
                   <div className="flex items-center gap-3 min-w-0">
                     <img
-                      src="https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/pasted_file_mDyGx8_image_080f602f.png"
+                      src="/assets/images/reblium-hero.png"
                       className="h-8 w-8 rounded-md object-contain shrink-0 dark:invert"
                       alt="Genji Logo"
                     />
@@ -337,9 +337,6 @@ function DashboardLayoutContent({
                 );
               })}
             </SidebarMenu>
-          </SidebarContent>
-
-          <SidebarContent className="gap-0 flex-1">
           </SidebarContent>
 
           <SidebarFooter className="p-3 space-y-3">

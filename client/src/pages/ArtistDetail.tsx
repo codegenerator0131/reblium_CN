@@ -13,7 +13,7 @@ const andre = {
   name: "Andre Ferwerda",
   titleKey: "artists.residentArtist",
   bioKey: "artists.andreBio",
-  image: "https://media.licdn.com/dms/image/v2/C4D03AQF9uBgIws-qsQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1516902185721?e=2147483647&v=beta&t=l8fDWQImOdQmcgpmM2Lyd7D5OKKucHbFMO5H4HaZpeA",
+  image: "/assets/images/artist-andre.jpg",
   website: "https://andreferwerda.com/",
   specialtiesKeys: [
     "artists.specialty1",

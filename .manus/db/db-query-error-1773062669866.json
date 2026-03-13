@@ -1,8 +1,0 @@
-{
-  "query": "SELECT id, name, thumbnail_url FROM storeItems;",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4JyWN7J3MBWttr5.926298ab7e51 --database iq22PtDDLnfa9zucwBEcgk --execute SELECT id, name, thumbnail_url FROM storeItems;",
-  "returncode": 1,
-  "logs": [
-    "ERROR 1054 (42S22) at line 1: Unknown column 'thumbnail_url' in 'field list'"
-  ]
-}

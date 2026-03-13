@@ -83,7 +83,7 @@ const mockAssets: Asset[] = [
     name: "Futuristic Combat Suit",
     category: "clothing",
     thumbnailUrl:
-      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/vsqgvnSDMVJBrIXB.png",
+      "/assets/images/asset-1.png",
     description: "High-tech combat suit with advanced features",
     personalPriceUSD: 5.0,
     commercialPriceUSD: 25.0,
@@ -101,7 +101,7 @@ const mockAssets: Asset[] = [
     name: "Cyberpunk Hair Pack",
     category: "hair",
     thumbnailUrl:
-      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/vplBngiOVdhCGlPL.png",
+      "/assets/images/asset-2.png",
     description: "Collection of futuristic hair styles",
     personalPriceUSD: 3.0,
     commercialPriceUSD: 15.0,
@@ -119,7 +119,7 @@ const mockAssets: Asset[] = [
     name: "Elven Face Customization",
     category: "face",
     thumbnailUrl:
-      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/OJnJkyWnaDEtaoyt.png",
+      "/assets/images/asset-3.png",
     description: "Detailed elven face customization options",
     personalPriceUSD: 4.0,
     commercialPriceUSD: 20.0,
@@ -137,7 +137,7 @@ const mockAssets: Asset[] = [
     name: "Dragon Wings Accessory",
     category: "accessories",
     thumbnailUrl:
-      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/oeFhQpHAQQXFZMhb.png",
+      "/assets/images/asset-4.png",
     description: "Majestic dragon wings for avatars",
     personalPriceUSD: 6.0,
     commercialPriceUSD: 30.0,
@@ -155,7 +155,7 @@ const mockAssets: Asset[] = [
     name: "Casual Outfit Pack",
     category: "clothing",
     thumbnailUrl:
-      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/LKyZbibRYsVAgKcj.png",
+      "/assets/images/asset-5.png",
     description: "Casual everyday clothing collection",
     personalPriceUSD: 7.0,
     commercialPriceUSD: 35.0,
@@ -173,7 +173,7 @@ const mockAssets: Asset[] = [
     name: "Glitchy Animations",
     category: "animations",
     thumbnailUrl:
-      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/ncPYBvMQiCMgIKFu.png",
+      "/assets/images/asset-6.png",
     description: "Animation pack with technical issues",
     personalPriceUSD: 5.0,
     commercialPriceUSD: 25.0,
@@ -191,7 +191,7 @@ const mockAssets: Asset[] = [
     name: "Sci-Fi Pack",
     category: "packs",
     thumbnailUrl:
-      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/bmdgfncQicNdELPC.png",
+      "/assets/images/asset-7.png",
     description: "Complete sci-fi themed asset collection",
     personalPriceUSD: 15.0,
     commercialPriceUSD: 75.0,
@@ -209,7 +209,7 @@ const mockAssets: Asset[] = [
     name: "Fantasy Pack",
     category: "packs",
     thumbnailUrl:
-      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/iNJosVufnOWRIVLZ.png",
+      "/assets/images/asset-8.png",
     description: "Fantasy-themed assets and accessories",
     personalPriceUSD: 12.0,
     commercialPriceUSD: 60.0,
@@ -227,7 +227,7 @@ const mockAssets: Asset[] = [
     name: "Starters Pack",
     category: "packs",
     thumbnailUrl:
-      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/vsqgvnSDMVJBrIXB.png",
+      "/assets/images/asset-1.png",
     description: "Essential starter assets for new users",
     personalPriceUSD: 8.0,
     commercialPriceUSD: 40.0,

@@ -28,7 +28,7 @@ export default function Home() {
     date: t('blog.genjiDate'),
     location: t('blog.genjiLocation'),
     category: t('blog.pressRelease'),
-    coverImage: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/KJVDWHlGyuwDTpep.png",
+    coverImage: "/assets/images/banner-genji.png",
     excerpt: t('blog.genjiExcerpt'),
   };
 
@@ -38,7 +38,7 @@ export default function Home() {
       tag: t('home.whatsNew'),
       title: t('home.startersPack'),
       description: t('home.startersDesc'),
-      image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/KpRsFfJIzTmaDjij.png",
+      image: "/assets/images/starter-pack.png",
       buttonLabel: t('home.exploreNow'),
       link: "/store",
     },
@@ -47,7 +47,7 @@ export default function Home() {
       tag: t('blog.pressRelease'),
       title: t('blog.genjiCarouselTitle'),
       description: t('blog.genjiCarouselDesc'),
-      image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/KJVDWHlGyuwDTpep.png",
+      image: "/assets/images/banner-genji.png",
       buttonLabel: t('blog.readArticle'),
       link: "/blog/genji-launch",
     },

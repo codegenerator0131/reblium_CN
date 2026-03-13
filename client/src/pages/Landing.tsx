@@ -1,8 +1,9 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { APP_TITLE, getLoginUrl } from "@/const";
+import { APP_TITLE } from "@/const";
 import { useTheme } from "@/contexts/ThemeContext";
 import { trpc } from "@/lib/trpc";
+import { mockSignIn } from "@/lib/mockTrpc";
 import {
   LayoutDashboard, Store as StoreIcon,
   BookOpen, Newspaper, HelpCircle, Palette, ExternalLink,
@@ -210,7 +211,10 @@ export default function Landing() {
     if (!loading && isAuthenticated) navigate("/");
   }, [isAuthenticated, loading, navigate]);
 
-  const loginUrl = useMemo(() => getLoginUrl(), []);
+  const handleSignIn = (e: React.MouseEvent) => {
+    e.preventDefault();
+    mockSignIn();
+  };
   const [lightboxImage, setLightboxImage] = useState<LightboxImage>(null);
   const [activeView, setActiveView] = useState<ActiveView>("home");
 
@@ -257,7 +261,7 @@ export default function Landing() {
               className="rounded-md hover:opacity-80 transition-opacity focus:outline-none"
             >
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/pasted_file_mDyGx8_image_080f602f.png"
+                src="/assets/images/reblium-hero.png"
                 className="h-8 w-8 rounded-md object-contain dark:invert"
                 alt="Genji Logo"
               />
@@ -293,21 +297,21 @@ export default function Landing() {
             {/* Logo visible only on mobile */}
             <div className="flex items-center gap-2">
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/pasted_file_mDyGx8_image_080f602f.png"
+                src="/assets/images/reblium-hero.png"
                 className="h-6 w-6 rounded object-contain dark:invert sm:hidden"
                 alt="Logo"
               />
               <span className="text-sm font-semibold tracking-tight text-foreground">{APP_TITLE}</span>
             </div>
-            <a href={loginUrl} className="text-sm text-primary hover:underline font-medium">{t('landing.signIn')}</a>
+            <a href="#" onClick={handleSignIn} className="text-sm text-primary hover:underline font-medium">{t('landing.signIn')}</a>
           </div>
 
           {activeView === "about" && <LandingAboutPanel onStart={() => setActiveView("store")} />}
-          {activeView === "store" && <LandingStorePanel loginUrl={loginUrl} />}
+          {activeView === "store" && <LandingStorePanel onSignIn={handleSignIn} />}
           {activeView === "tutorials" && <LandingTutorialsPanel />}
           {activeView === "blog" && <LandingBlogPanel />}
           {activeView === "faq" && <LandingFAQPanel />}
-          {activeView === "artists" && <LandingArtistsPanel loginUrl={loginUrl} />}
+          {activeView === "artists" && <LandingArtistsPanel onSignIn={handleSignIn} />}
           {activeView === "home" && (
             <div className="flex flex-col">
               {/* Hero text block */}
@@ -339,7 +343,7 @@ export default function Landing() {
                 ? <SkeletonColumns />
                 : <StaggeredGallery
                     images={galleryImages}
-                    loginUrl={loginUrl}
+                    onSignIn={handleSignIn}
                     onTileClick={setLightboxImage}
                   />
               }
@@ -401,11 +405,11 @@ type GalleryImage = { url: string; name: string };
 
 function StaggeredGallery({
   images,
-  loginUrl,
+  onSignIn,
   onTileClick,
 }: {
   images: GalleryImage[];
-  loginUrl: string;
+  onSignIn: (e: React.MouseEvent) => void;
   onTileClick: (img: GalleryImage) => void;
 }) {
   const numCols = useColumnCount(); // 2 / 3 / 5 based on screen width
@@ -547,7 +551,7 @@ function StaggeredGallery({
             if (item.kind === "login") {
               return (
                 <div key="login" className="rounded-xl overflow-hidden">
-                  <LoginCard loginUrl={loginUrl} />
+                  <LoginCard onSignIn={onSignIn} />
                 </div>
               );
             }
@@ -638,13 +642,13 @@ const GalleryTile = React.forwardRef<HTMLDivElement, {
 // ---------------------------------------------------------------------------
 // Login card
 // ---------------------------------------------------------------------------
-function LoginCard({ loginUrl }: { loginUrl: string }) {
+function LoginCard({ onSignIn }: { onSignIn: (e: React.MouseEvent) => void }) {
   const { t } = useLanguage();
   return (
     <div className="rounded-xl border border-border bg-background/95 backdrop-blur-md shadow-lg p-4 sm:p-5 flex flex-col justify-center gap-3">
       <div className="flex items-center gap-2 mb-1">
         <img
-          src="https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/pasted_file_mDyGx8_image_080f602f.png"
+          src="/assets/images/reblium-hero.png"
           className="h-6 w-6 rounded object-contain dark:invert"
           alt="Genji Logo"
         />
@@ -652,7 +656,7 @@ function LoginCard({ loginUrl }: { loginUrl: string }) {
       </div>
 
       {/* WeChat login */}
-      <a href={loginUrl}
+      <a href="#" onClick={onSignIn}
         className="flex items-center justify-center gap-2 w-full rounded-lg border border-border bg-[#07C160] hover:bg-[#06ad55] transition-colors px-4 py-2.5 text-sm font-semibold text-white">
         <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
           <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-7.062-6.122zm-3.74 2.632c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm5.4 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
@@ -661,7 +665,7 @@ function LoginCard({ loginUrl }: { loginUrl: string }) {
       </a>
 
       <div className="text-center text-xs text-muted-foreground mt-1">
-        <a href={loginUrl} className="text-primary hover:underline font-medium">{t('common.signIn')}</a>
+        <a href="#" onClick={onSignIn} className="text-primary hover:underline font-medium">{t('common.signIn')}</a>
       </div>
     </div>
   );
@@ -676,7 +680,7 @@ const STORE_CATEGORY_LABELS: Record<string, string> = {
   "sci-fi": "Sci-Fi",
 };
 
-function LandingStorePanel({ loginUrl }: { loginUrl: string }) {
+function LandingStorePanel({ onSignIn }: { onSignIn: (e: React.MouseEvent) => void }) {
   const storeItemsQuery = trpc.store.listItems.useQuery({});
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
@@ -715,7 +719,7 @@ function LandingStorePanel({ loginUrl }: { loginUrl: string }) {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-4xl font-bold text-foreground">{t('store.title')}</h1>
-        <a href={loginUrl} className="text-sm text-primary hover:underline font-medium">{t('landing.signIn')}</a>
+        <a href="#" onClick={onSignIn} className="text-sm text-primary hover:underline font-medium">{t('landing.signIn')}</a>
       </div>
 
       {/* Search + category filters */}
@@ -786,7 +790,7 @@ function LandingStorePanel({ loginUrl }: { loginUrl: string }) {
                 <p className="text-white font-semibold text-sm leading-tight line-clamp-2 mb-1">{item.name}</p>
                 <p className="text-cyan-300 text-xs font-medium">${item.personalPriceUSD} / ¥{item.personalPriceCNY}</p>
                 <button
-                  onClick={(e) => { e.stopPropagation(); window.location.href = loginUrl; }}
+                  onClick={(e) => { e.stopPropagation(); onSignIn(e); }}
                   className="mt-2 w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-xs py-1 h-7 rounded-md flex items-center justify-center gap-1"
                 >
                   <ShoppingCart className="w-3 h-3" />{t('common.addToCart')}
@@ -825,17 +829,17 @@ const SHOWCASE_VIDEOS = [
 const GENJI_TUTORIAL_DEFS = [
   {
     titleKey: "tutorialsPanel.intro",
-    thumbnail: "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/F_Fant1_front_138552db.jpg",
+    thumbnail: "/assets/images/fantasy-1.jpg",
     duration: "10 min",
   },
   {
     titleKey: "tutorialsPanel.exportUnity",
-    thumbnail: "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/darklady_front_3d077c87.jpg",
+    thumbnail: "/assets/images/darklady.jpg",
     duration: "8 min",
   },
   {
     titleKey: "tutorialsPanel.exportUnreal",
-    thumbnail: "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/femaleknight_front_59948d5e.jpg",
+    thumbnail: "/assets/images/femaleknight.jpg",
     duration: "8 min",
   },
 ];
@@ -893,7 +897,7 @@ const BLOG_ARTICLE_DEFS = [
     subtitleKey: "blog.genjiSubtitle",
     dateKey: "blog.genjiDate",
     categoryKey: "blog.pressRelease",
-    coverImage: "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/pasted_file_mDyGx8_image_080f602f.png",
+    coverImage: "/assets/images/reblium-hero.png",
     excerptKey: "blog.genjiExcerpt",
   },
 ];
@@ -1027,14 +1031,14 @@ function LandingFAQPanel() {
 // Product Landing Panel — shown when user clicks the logo
 // ---------------------------------------------------------------------------
 const ARTWORK = [
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/upload/darklady_front_5e3b2a1c.jpg",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/upload/demon_front_7f4c9d2e.jpg",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/upload/femaleknight_front_2b8e4f1a.jpg",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/upload/catwoman_front_9a3d7c5b.jpg",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/upload/ninjagirl_front_4e1f8b6d.jpg",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/upload/F_SciFi_1_front_3c7a2e9f.jpg",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/upload/Mech_front_8b5d4c1a.jpg",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/upload/dracula_front_6f2e9b3d.jpg",
+  "/assets/images/gallery-darklady.jpg",
+  "/assets/images/gallery-demon.jpg",
+  "/assets/images/gallery-femaleknight.jpg",
+  "/assets/images/gallery-catwoman.jpg",
+  "/assets/images/gallery-ninjagirl.jpg",
+  "/assets/images/gallery-scifi.jpg",
+  "/assets/images/gallery-mech.jpg",
+  "/assets/images/gallery-dracula.jpg",
 ];
 
 function LandingAboutPanel({ onStart }: { onStart: () => void }) {
@@ -1065,7 +1069,7 @@ function LandingAboutPanel({ onStart }: { onStart: () => void }) {
         {/* Middle: Autoplay video */}
         <div className="w-full flex justify-center mb-8">
           <video
-            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/Genji-1_49834540.mov"
+            src="/assets/images/reblium-hero.png"
             autoPlay
             muted
             loop
@@ -1278,10 +1282,10 @@ const andre = {
   titleKey: "artists.residentArtist",
   website: "https://andreferwerda.com/",
   bioKey: "artists.andreBio",
-  image: "https://media.licdn.com/dms/image/v2/C4D03AQF9uBgIws-qsQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1516902185721?e=2147483647&v=beta&t=l8fDWQImOdQmcgpmM2Lyd7D5OKKucHbFMO5H4HaZpeA",
+  image: "/assets/images/artist-andre.jpg",
 };
 
-function LandingArtistsPanel({ loginUrl }: { loginUrl: string }) {
+function LandingArtistsPanel({ onSignIn }: { onSignIn: (e: React.MouseEvent) => void }) {
   const { t, language } = useLanguage();
   const [, navigate] = useLocation();
   const storeItemsQuery = trpc.store.listItems.useQuery({});
@@ -1380,7 +1384,8 @@ function LandingArtistsPanel({ loginUrl }: { loginUrl: string }) {
         <div className="mt-10 text-center py-10 border border-dashed border-border rounded-xl bg-muted/20">
           <p className="text-muted-foreground mb-4">{t('artists.signInToAccess') || 'Sign in to purchase assets and access your collection'}</p>
           <a
-            href={loginUrl}
+            href="#"
+            onClick={onSignIn}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-black font-bold text-sm transition-colors"
           >
             {t('landing.signIn')}

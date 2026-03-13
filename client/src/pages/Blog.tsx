@@ -33,7 +33,7 @@ function useArticles(): BlogArticle[] {
       date: t('blog.genjiDate'),
       location: t('blog.genjiLocation'),
       category: t('blog.pressRelease'),
-      coverImage: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/KJVDWHlGyuwDTpep.png",
+      coverImage: "/assets/images/banner-genji.png",
       excerpt: t('blog.genjiExcerpt'),
       content: [
         t('blog.genjiContent1'),

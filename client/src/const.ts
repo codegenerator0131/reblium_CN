@@ -4,12 +4,18 @@ export const APP_TITLE = import.meta.env.VITE_APP_TITLE || "Genji Studio";
 
 export const APP_LOGO =
   import.meta.env.VITE_APP_LOGO ||
-  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/pswLrQGbiFtIAmRK.png";
+  "/assets/images/logo.png";
 
 // Generate login URL at runtime so redirect URI reflects the current origin.
 export const getLoginUrl = () => {
   const oauthPortalUrl = import.meta.env.VITE_OAUTH_PORTAL_URL;
   const appId = import.meta.env.VITE_APP_ID;
+
+  // When OAuth env vars are not configured, return a no-op URL
+  if (!oauthPortalUrl || !appId) {
+    return "#";
+  }
+
   const redirectUri = `${window.location.origin}/api/oauth/callback`;
   const state = btoa(redirectUri);
 
