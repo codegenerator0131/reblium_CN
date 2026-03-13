@@ -1,0 +1,2 @@
+ALTER TABLE `storeItems` ADD `personalPriceCNY` decimal(10,2) DEFAULT '36.00' NOT NULL;--> statement-breakpoint
+ALTER TABLE `storeItems` ADD `commercialPriceCNY` decimal(10,2) DEFAULT '180.00' NOT NULL;

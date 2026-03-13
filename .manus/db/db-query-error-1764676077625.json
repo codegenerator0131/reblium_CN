@@ -1,0 +1,8 @@
+{
+  "query": "UPDATE artists SET \n  name = 'Kristina Nedeljkovic',\n  bio = 'I am a Founder and Creative Director of LORA LEGARTH, a Scandinavian clothing brand that focuses on simplicity by crafting cosy collections with a minimalistic layout and 3DKN, a digital studio aimed to help fashion and creative industries on their digital journey and express their designs with innovation.',\n  photoUrl = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/AewhWuPwEDmcSxWV.jpg',\n  photoKey = 'artists/kristina_nedeljkovic.jpg'\nWHERE name = 'Luna Chen';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4JyWN7J3MBWttr5.926298ab7e51 --database iq22PtDDLnfa9zucwBEcgk --execute UPDATE artists SET \n  name = 'Kristina Nedeljkovic',\n  bio = 'I am a Founder and Creative Director of LORA LEGARTH, a Scandinavian clothing brand that focuses on simplicity by crafting cosy collections with a minimalistic layout and 3DKN, a digital studio aimed to help fashion and creative industries on their digital journey and express their designs with innovation.',\n  photoUrl = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663044718178/AewhWuPwEDmcSxWV.jpg',\n  photoKey = 'artists/kristina_nedeljkovic.jpg'\nWHERE name = 'Luna Chen';",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1146 (42S02) at line 1: Table 'iq22ptddlnfa9zucwbecgk.artists' doesn't exist"
+  ]
+}

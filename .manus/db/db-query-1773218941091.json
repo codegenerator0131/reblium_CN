@@ -1,0 +1,22 @@
+{
+  "query": "SELECT category, COUNT(*) as count FROM storeItems GROUP BY category ORDER BY category;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4JyWN7J3MBWttr5.926298ab7e51 --database iq22PtDDLnfa9zucwBEcgk --execute SELECT category, COUNT(*) as count FROM storeItems GROUP BY category ORDER BY category;",
+  "rows": [
+    {
+      "category": "clothing",
+      "count": "9"
+    },
+    {
+      "category": "fantasy",
+      "count": "4"
+    },
+    {
+      "category": "sci-fi",
+      "count": "4"
+    }
+  ],
+  "messages": [],
+  "stdout": "category\tcount\nclothing\t9\nfantasy\t4\nsci-fi\t4\n",
+  "stderr": "",
+  "execution_time_ms": 52
+}

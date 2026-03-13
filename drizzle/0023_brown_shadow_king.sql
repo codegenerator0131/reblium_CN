@@ -1,0 +1,1 @@
+ALTER TABLE `storeItems` ADD `artistName` varchar(255) DEFAULT 'Andre Ferwerda';

@@ -1,35 +1,23 @@
 {
+  "include": ["client/src/**/*", "shared/**/*", "server/**/*"],
+  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
   "compilerOptions": {
-    "baseUrl": ".",
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "strict": false,
-    "noEmit": true,
-    "allowJs": true,
-    "jsx": "preserve",
-    "module": "esnext",
     "incremental": true,
-    "skipLibCheck": true,
-    "noImplicitAny": false,
-    "noImplicitThis": false,
+    "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
+    "noEmit": true,
+    "module": "ESNext",
+    "strict": true,
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "jsx": "preserve",
     "esModuleInterop": true,
-    "isolatedModules": true,
-    "strictNullChecks": false,
-    "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": false,
-    "useUnknownInCatchVariables": false,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "types": ["node", "vite/client"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./client/src/*"],
+      "@shared/*": ["./shared/*"]
     }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  }
 }

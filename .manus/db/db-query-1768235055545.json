@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO sdks (name, engine, version, description, downloadUrl, documentationUrl, fileSize, releaseDate) VALUES\n('Reblium SDK for Blender', 'Blender', '1.0.0 (Coming Soon)', 'Official Reblium SDK for Blender 3D. Create and customize avatars directly in Blender with full integration support.', '', '', NULL, DATE_ADD(NOW(), INTERVAL 90 DAY));",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4JyWN7J3MBWttr5.926298ab7e51 --database iq22PtDDLnfa9zucwBEcgk --execute INSERT INTO sdks (name, engine, version, description, downloadUrl, documentationUrl, fileSize, releaseDate) VALUES\n('Reblium SDK for Blender', 'Blender', '1.0.0 (Coming Soon)', 'Official Reblium SDK for Blender 3D. Create and customize avatars directly in Blender with full integration support.', '', '', NULL, DATE_ADD(NOW(), INTERVAL 90 DAY));",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 416
+}

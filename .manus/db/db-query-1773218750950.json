@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE storeItems SET image2Url = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/F_Fant1_quarter_aa3a07ce.jpg', image2Key = 'F_Fant1_quarter_aa3a07ce.jpg', image3Url = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/F_Fant1_back_3f72e3c4.jpg', image3Key = 'F_Fant1_back_3f72e3c4.jpg' WHERE name = 'Female Fantasy Outfit 1';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4JyWN7J3MBWttr5.926298ab7e51 --database iq22PtDDLnfa9zucwBEcgk --execute UPDATE storeItems SET image2Url = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/F_Fant1_quarter_aa3a07ce.jpg', image2Key = 'F_Fant1_quarter_aa3a07ce.jpg', image3Url = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663044718178/iq22PtDDLnfa9zucwBEcgk/F_Fant1_back_3f72e3c4.jpg', image3Key = 'F_Fant1_back_3f72e3c4.jpg' WHERE name = 'Female Fantasy Outfit 1';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 59
+}

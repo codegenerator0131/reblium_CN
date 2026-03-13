@@ -1,0 +1,1 @@
+ALTER TABLE `storeItems` MODIFY COLUMN `category` enum('artists','clothing','hair','face','face_fantasy','face_human','accessories','animations','packs','fantasy','sci-fi') NOT NULL;

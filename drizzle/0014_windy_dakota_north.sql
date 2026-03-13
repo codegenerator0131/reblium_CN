@@ -1,0 +1,1 @@
+ALTER TABLE `sdks` ADD `logoUrl` text;

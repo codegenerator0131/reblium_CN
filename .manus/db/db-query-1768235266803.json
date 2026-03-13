@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO polls (question, description, isActive) VALUES ('Which pack would you like to see next?', 'Vote for your favorite future pack to help us prioritize development', true);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4JyWN7J3MBWttr5.926298ab7e51 --database iq22PtDDLnfa9zucwBEcgk --execute INSERT INTO polls (question, description, isActive) VALUES ('Which pack would you like to see next?', 'Vote for your favorite future pack to help us prioritize development', true);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 388
+}

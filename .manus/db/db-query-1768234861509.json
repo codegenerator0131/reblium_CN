@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO sdks (name, engine, version, description, downloadUrl, documentationUrl, fileSize, releaseDate) VALUES\n('Reblium SDK for Unity', 'Unity', '1.0.0', 'Official Reblium SDK for Unity game engine. Integrate avatar creation and customization into your Unity projects.', 'https://example.com/reblium-sdk-unity-1.0.0.unitypackage', 'https://docs.reblium.com/unity', 450, NOW()),\n('Reblium SDK for Unreal Engine', 'Unreal Engine', '1.0.0', 'Official Reblium SDK for Unreal Engine 5. Create dynamic avatar systems with full customization support.', 'https://example.com/reblium-sdk-unreal-1.0.0.zip', 'https://docs.reblium.com/unreal', 850, NOW());",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4JyWN7J3MBWttr5.926298ab7e51 --database iq22PtDDLnfa9zucwBEcgk --execute INSERT INTO sdks (name, engine, version, description, downloadUrl, documentationUrl, fileSize, releaseDate) VALUES\n('Reblium SDK for Unity', 'Unity', '1.0.0', 'Official Reblium SDK for Unity game engine. Integrate avatar creation and customization into your Unity projects.', 'https://example.com/reblium-sdk-unity-1.0.0.unitypackage', 'https://docs.reblium.com/unity', 450, NOW()),\n('Reblium SDK for Unreal Engine', 'Unreal Engine', '1.0.0', 'Official Reblium SDK for Unreal Engine 5. Create dynamic avatar systems with full customization support.', 'https://example.com/reblium-sdk-unreal-1.0.0.zip', 'https://docs.reblium.com/unreal', 850, NOW());",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 762
+}

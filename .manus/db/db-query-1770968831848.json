@@ -1,0 +1,35 @@
+{
+  "query": "SELECT id, name, thumbnailUrl FROM storeItems LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4JyWN7J3MBWttr5.926298ab7e51 --database iq22PtDDLnfa9zucwBEcgk --execute SELECT id, name, thumbnailUrl FROM storeItems LIMIT 5;",
+  "rows": [
+    {
+      "id": "240031",
+      "name": "Business Suit",
+      "thumbnailUrl": "/clothing-1.png"
+    },
+    {
+      "id": "240032",
+      "name": "Casual T-Shirt",
+      "thumbnailUrl": "/clothing-2.png"
+    },
+    {
+      "id": "240033",
+      "name": "Leather Jacket",
+      "thumbnailUrl": "/clothing-3.png"
+    },
+    {
+      "id": "240034",
+      "name": "Summer Dress",
+      "thumbnailUrl": "/clothing-4.png"
+    },
+    {
+      "id": "240035",
+      "name": "Hoodie",
+      "thumbnailUrl": "/clothing-5.png"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tthumbnailUrl\n240031\tBusiness Suit\t/clothing-1.png\n240032\tCasual T-Shirt\t/clothing-2.png\n240033\tLeather Jacket\t/clothing-3.png\n240034\tSummer Dress\t/clothing-4.png\n240035\tHoodie\t/clothing-5.png\n",
+  "stderr": "",
+  "execution_time_ms": 62
+}
