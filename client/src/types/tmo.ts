@@ -73,6 +73,15 @@ export interface MappedUser {
   custom_attributes: TMOCustomAttribute[];
 }
 
+export interface TMOGeoItem {
+  id: string;
+  name: string;
+}
+
+export type TMOGeoRegion = TMOGeoItem;
+export type TMOGeoCity = TMOGeoItem;
+export type TMOGeoDistrict = TMOGeoItem;
+
 export interface TMOAPIError {
   message: string;
   errors?: { message: string; parameters?: Record<string, string> }[];

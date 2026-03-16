@@ -2,6 +2,10 @@
 import type {
   TMOCustomer,
   TMOCustomerRegisterRequest,
+  TMOAddress,
+  TMOGeoRegion,
+  TMOGeoCity,
+  TMOGeoDistrict,
   TMOAPIError,
   MappedUser,
   SMSCodeResponse,
@@ -311,6 +315,84 @@ export async function getWeChatLoginUrl(
   return wechatUrl;
 }
 
+// ==================== Address Endpoints ====================
+
+export async function getAddress(token?: string): Promise<TMOAddress[]> {
+  const authToken = token || getToken();
+  if (!authToken) throw new Error("No authentication token");
+
+  return apiRequest<TMOAddress[]>(
+    "rest/V1/customer/address",
+    { method: "GET" },
+    authToken,
+  );
+}
+
+export async function createAddress(
+  payload: any,
+  token?: string,
+): Promise<TMOAddress> {
+  const authToken = token || getToken();
+  if (!authToken) throw new Error("No authentication token");
+
+  return apiRequest<TMOAddress>(
+    "rest/V1/customer/address",
+    { method: "POST", body: JSON.stringify(payload) },
+    authToken,
+  );
+}
+
+export async function updateAddress(
+  payload: any,
+  token?: string,
+): Promise<TMOAddress> {
+  const authToken = token || getToken();
+  if (!authToken) throw new Error("No authentication token");
+
+  return apiRequest<TMOAddress>(
+    "rest/V1/customer/address",
+    { method: "PUT", body: JSON.stringify(payload) },
+    authToken,
+  );
+}
+
+export async function deleteAddress(
+  addressId: number,
+  token?: string,
+): Promise<boolean> {
+  const authToken = token || getToken();
+  if (!authToken) throw new Error("No authentication token");
+
+  return apiRequest<boolean>(
+    `rest/V1/customer/address/${addressId}`,
+    { method: "DELETE" },
+    authToken,
+  );
+}
+
+// ==================== Geo Endpoints (China) ====================
+
+export async function getRegions(): Promise<TMOGeoRegion[]> {
+  return apiRequest<TMOGeoRegion[]>(
+    "rest/V1/directory/geoinfo/of/region/CN",
+    { method: "GET" },
+  );
+}
+
+export async function getCities(regionId: string): Promise<TMOGeoCity[]> {
+  return apiRequest<TMOGeoCity[]>(
+    `rest/V1/directory/geoinfo/of/city/${regionId}`,
+    { method: "GET" },
+  );
+}
+
+export async function getDistricts(cityId: string): Promise<TMOGeoDistrict[]> {
+  return apiRequest<TMOGeoDistrict[]>(
+    `rest/V1/directory/geoinfo/of/district/${cityId}`,
+    { method: "GET" },
+  );
+}
+
 // ==================== Customer Endpoints ====================
 
 export async function getProfile(token?: string): Promise<TMOCustomer> {
@@ -402,6 +484,13 @@ const tmoApi = {
   resetPassword,
   changePassword,
   getWeChatLoginUrl,
+  getAddress,
+  createAddress,
+  updateAddress,
+  deleteAddress,
+  getRegions,
+  getCities,
+  getDistricts,
   getProfile,
   updateProfile,
   mapTMOCustomerToUser,
