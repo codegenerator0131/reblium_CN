@@ -8,7 +8,8 @@
       "Bash(curl:*)",
       "Bash(python -m json.tool:*)",
       "Bash(npm uninstall stripe @stripe/stripe-js @stripe/react-stripe-js)",
-      "Bash(npx next build)"
+      "Bash(npx next build)",
+      "Bash(pnpm install:*)"
     ]
   }
 }
