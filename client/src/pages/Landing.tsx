@@ -3,7 +3,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { APP_TITLE } from "@/const";
 import { useTheme } from "@/contexts/ThemeContext";
 import { trpc } from "@/lib/trpc";
-import { mockSignIn } from "@/lib/mockTrpc";
+import { realSignIn } from "@/lib/mockTrpc";
+import { LoginDialog } from "@/components/LoginDialog";
 import {
   LayoutDashboard, Store as StoreIcon,
   BookOpen, Newspaper, HelpCircle, Palette, ExternalLink,
@@ -211,10 +212,27 @@ export default function Landing() {
     if (!loading && isAuthenticated) navigate("/");
   }, [isAuthenticated, loading, navigate]);
 
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+  const [loginDialogInitialView, setLoginDialogInitialView] = useState<"login" | "signup">("login");
+
   const handleSignIn = (e: React.MouseEvent) => {
     e.preventDefault();
-    mockSignIn();
+    setLoginDialogInitialView("login");
+    setIsLoginDialogOpen(true);
   };
+
+  const handleSignUp = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setLoginDialogInitialView("signup");
+    setIsLoginDialogOpen(true);
+  };
+
+  const handleLoginSuccess = async (token: string) => {
+    await realSignIn(token);
+    setIsLoginDialogOpen(false);
+    navigate("/");
+  };
+
   const [lightboxImage, setLightboxImage] = useState<LightboxImage>(null);
   const [activeView, setActiveView] = useState<ActiveView>("home");
 
@@ -344,6 +362,7 @@ export default function Landing() {
                 : <StaggeredGallery
                     images={galleryImages}
                     onSignIn={handleSignIn}
+                    onSignUp={handleSignUp}
                     onTileClick={setLightboxImage}
                   />
               }
@@ -374,6 +393,13 @@ export default function Landing() {
         <LanguageSwitcher direction="up" />
         <ThemeToggle />
       </nav>
+
+      <LoginDialog
+        open={isLoginDialogOpen}
+        onOpenChange={setIsLoginDialogOpen}
+        onLoginSuccess={handleLoginSuccess}
+        initialView={loginDialogInitialView}
+      />
     </>
   );
 }
@@ -406,10 +432,12 @@ type GalleryImage = { url: string; name: string };
 function StaggeredGallery({
   images,
   onSignIn,
+  onSignUp,
   onTileClick,
 }: {
   images: GalleryImage[];
   onSignIn: (e: React.MouseEvent) => void;
+  onSignUp: (e: React.MouseEvent) => void;
   onTileClick: (img: GalleryImage) => void;
 }) {
   const numCols = useColumnCount(); // 2 / 3 / 5 based on screen width
@@ -551,7 +579,7 @@ function StaggeredGallery({
             if (item.kind === "login") {
               return (
                 <div key="login" className="rounded-xl overflow-hidden">
-                  <LoginCard onSignIn={onSignIn} />
+                  <LoginCard onSignIn={onSignIn} onSignUp={onSignUp} />
                 </div>
               );
             }
@@ -642,7 +670,7 @@ const GalleryTile = React.forwardRef<HTMLDivElement, {
 // ---------------------------------------------------------------------------
 // Login card
 // ---------------------------------------------------------------------------
-function LoginCard({ onSignIn }: { onSignIn: (e: React.MouseEvent) => void }) {
+function LoginCard({ onSignIn, onSignUp }: { onSignIn: (e: React.MouseEvent) => void; onSignUp: (e: React.MouseEvent) => void }) {
   const { t } = useLanguage();
   return (
     <div className="rounded-xl border border-border bg-background/95 backdrop-blur-md shadow-lg p-4 sm:p-5 flex flex-col justify-center gap-3">
@@ -665,7 +693,7 @@ function LoginCard({ onSignIn }: { onSignIn: (e: React.MouseEvent) => void }) {
       </a>
 
       <div className="text-center text-xs text-muted-foreground mt-1">
-        <a href="#" onClick={onSignIn} className="text-primary hover:underline font-medium">{t('common.signIn')}</a>
+        <a href="#" onClick={onSignUp} className="text-primary hover:underline font-medium">{t('common.signUp')}</a>
       </div>
     </div>
   );

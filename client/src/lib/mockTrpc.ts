@@ -3,7 +3,7 @@
  * Returns static data and handles mutations locally in memory.
  * All pages import `trpc` from `@/lib/trpc` which re-exports from here.
  */
-import { useState, useCallback, useRef, useSyncExternalStore } from "react";
+import { useState, useCallback, useRef, useSyncExternalStore, useEffect } from "react";
 import {
   mockUser,
   mockStoreItems,
@@ -23,6 +23,7 @@ import {
   mockInvoices,
   getStoreItemsByCategory,
 } from "./mockData";
+import tmoApi from "./tmoApi";
 
 // ============ Simple Reactive Store ============
 // Allows mutations to trigger re-renders in query hooks
@@ -50,8 +51,27 @@ function createStore<T>(initialData: T) {
   };
 }
 
+// Auth user type that matches both mock and real TMO users
+type AuthUser = {
+  id: number;
+  openId?: string;
+  name: string;
+  email: string;
+  loginMethod: string;
+  bio?: string;
+  role: string;
+  creditBalance: number;
+  createdAt: Date | string;
+  updatedAt?: Date | string;
+  lastSignedIn?: Date | string;
+  firstname?: string;
+  lastname?: string;
+  mobile?: string;
+  mobile_prefix?: string;
+};
+
 // Mutable stores for data that can change via mutations
-const authUserStore = createStore<typeof mockUser | null>(null);
+const authUserStore = createStore<AuthUser | null>(null);
 const avatarProjectsStore = createStore([...mockAvatarProjects]);
 const cartItemsStore = createStore([...mockCartItems]);
 const featureRequestsStore = createStore([...mockFeatureRequests]);
@@ -69,9 +89,9 @@ function useMockQuery<T>(getData: () => T, _input?: unknown) {
     isPending: false,
     isFetching: false,
     isError: false,
-    error: null,
+    error: null as Error | null,
     status: "success" as const,
-    refetch: async () => ({ data, isLoading: false, isPending: false, isFetching: false, isError: false, error: null, status: "success" as const }),
+    refetch: async () => ({ data, isLoading: false, isPending: false, isFetching: false, isError: false, error: null as Error | null, status: "success" as const }),
     fetchStatus: "idle" as const,
   };
 }
@@ -84,16 +104,16 @@ function useStoreQuery<T>(store: ReturnType<typeof createStore<T>>) {
     isPending: false,
     isFetching: false,
     isError: false,
-    error: null,
+    error: null as Error | null,
     status: "success" as const,
-    refetch: async () => ({ data, isLoading: false, isPending: false, isFetching: false, isError: false, error: null, status: "success" as const }),
+    refetch: async () => ({ data, isLoading: false, isPending: false, isFetching: false, isError: false, error: null as Error | null, status: "success" as const }),
     fetchStatus: "idle" as const,
   };
 }
 
 function useMockMutation<TInput = void, TOutput = { success: boolean }>(
   handler: (input: TInput) => TOutput | Promise<TOutput>,
-  hookOpts?: { onSuccess?: (data: TOutput) => void; onError?: (error: unknown) => void }
+  hookOpts?: { onSuccess?: (data: TOutput) => void; onError?: (error: Error) => void }
 ) {
   const [isPending, setIsPending] = useState(false);
   const handlerRef = useRef(handler);
@@ -110,12 +130,12 @@ function useMockMutation<TInput = void, TOutput = { success: boolean }>(
       return result;
     } catch (e) {
       setIsPending(false);
-      hookOptsRef.current?.onError?.(e);
+      hookOptsRef.current?.onError?.(e instanceof Error ? e : new Error(String(e)));
       throw e;
     }
   }, []);
 
-  const mutate = useCallback((input: TInput, callOpts?: { onSuccess?: (data: TOutput) => void; onError?: (error: unknown) => void }) => {
+  const mutate = useCallback((input: TInput, callOpts?: { onSuccess?: (data: TOutput) => void; onError?: (error: Error) => void }) => {
     mutateAsync(input).then(
       data => callOpts?.onSuccess?.(data),
       error => { if (!callOpts?.onError) return; callOpts.onError(error); }
@@ -160,19 +180,68 @@ function createStoreQueryHook<T>(store: ReturnType<typeof createStore<T>>) {
 function createMutationHook<TInput = void, TOutput = { success: boolean }>(
   handler: (input: TInput) => TOutput | Promise<TOutput>
 ) {
-  const hook = (_opts?: { onSuccess?: (data: TOutput) => void; onError?: (error: unknown) => void }) => {
+  const hook = (_opts?: { onSuccess?: (data: TOutput) => void; onError?: (error: Error) => void }) => {
     return useMockMutation(handler, _opts);
   };
   return { useMutation: hook };
 }
 
-// Exported function to trigger mock sign-in from anywhere (e.g. Landing page)
+// Fetch TMO profile and populate authUserStore
+export async function fetchAndSetAuthUser(): Promise<AuthUser | null> {
+  const token = tmoApi.getTMOToken();
+  if (!token) {
+    authUserStore.set(null);
+    return null;
+  }
+
+  try {
+    const customer = await tmoApi.getProfile(token);
+    const mapped = tmoApi.mapTMOCustomerToUser(customer);
+    const authUser: AuthUser = {
+      id: mapped.id,
+      name: mapped.name,
+      email: mapped.email,
+      loginMethod: "tmo",
+      role: "user",
+      creditBalance: 0,
+      createdAt: mapped.created_at,
+      updatedAt: mapped.created_at,
+      lastSignedIn: new Date().toISOString(),
+      firstname: mapped.firstname,
+      lastname: mapped.lastname,
+      mobile: mapped.mobile,
+      mobile_prefix: mapped.mobile_prefix,
+    };
+    authUserStore.set(authUser);
+    return authUser;
+  } catch {
+    tmoApi.removeTMOToken();
+    authUserStore.set(null);
+    return null;
+  }
+}
+
+// Sign in with an already-obtained token (called after LoginDialog succeeds)
+export async function realSignIn(token: string): Promise<void> {
+  tmoApi.setTMOToken(token);
+  await fetchAndSetAuthUser();
+}
+
+// Sign out - clear token and auth state
+export function realSignOut(): void {
+  tmoApi.removeTMOToken();
+  localStorage.removeItem("manus-runtime-user-info");
+  authUserStore.set(null);
+}
+
+// Legacy mock functions — kept for backward compat but now no-ops
 export function mockSignIn() {
-  authUserStore.set(mockUser);
+  // No-op: use LoginDialog + realSignIn instead
+  console.warn("mockSignIn() is deprecated. Use LoginDialog for real auth.");
 }
 
 export function mockSignOut() {
-  authUserStore.set(null);
+  realSignOut();
 }
 
 export const trpc = {
@@ -200,33 +269,72 @@ export const trpc = {
     me: {
       useQuery: (_input?: any, _opts?: any) => {
         const user = useSyncExternalStore(authUserStore.subscribe, authUserStore.get, authUserStore.get);
+        const [isLoading, setIsLoading] = useState(() => {
+          // Only loading if we have a token but haven't fetched user yet
+          return !!tmoApi.getTMOToken() && user === null;
+        });
+        const initialFetchDone = useRef(false);
+
+        useEffect(() => {
+          if (initialFetchDone.current) return;
+          initialFetchDone.current = true;
+
+          const token = tmoApi.getTMOToken();
+          if (token && user === null) {
+            setIsLoading(true);
+            fetchAndSetAuthUser().finally(() => setIsLoading(false));
+          }
+        }, []);
+
         return {
           data: user,
-          isLoading: false,
-          isPending: false,
+          isLoading,
+          isPending: isLoading,
           isFetching: false,
           isError: false,
           error: null,
-          status: "success" as const,
-          refetch: async () => ({ data: user, isLoading: false, isPending: false, isFetching: false, isError: false, error: null, status: "success" as const }),
+          status: isLoading ? ("pending" as const) : ("success" as const),
+          refetch: async () => {
+            const result = await fetchAndSetAuthUser();
+            return { data: result, isLoading: false, isPending: false, isFetching: false, isError: false, error: null, status: "success" as const };
+          },
           fetchStatus: "idle" as const,
         };
       },
     },
     logout: createMutationHook(() => {
-      authUserStore.set(null);
+      realSignOut();
       return { success: true as const };
     }),
-    login: createMutationHook(() => {
-      authUserStore.set(mockUser);
+    login: createMutationHook(async (input: { token: string }) => {
+      await realSignIn(input.token);
       return { success: true as const };
     }),
   },
 
   user: {
-    getProfile: createQueryHook(() => mockUser),
-    updateProfile: createMutationHook((_input: { name?: string; email?: string; bio?: string }) => ({ success: true })),
-    changePassword: createMutationHook((_input: { currentPassword: string; newPassword: string }) => ({ success: true })),
+    getProfile: createQueryHook(() => authUserStore.get() || mockUser),
+    updateProfile: createMutationHook(async (input: { name?: string; email?: string; bio?: string }) => {
+      const token = tmoApi.getTMOToken();
+      if (token) {
+        const names = (input.name || "").split(" ");
+        const firstname = names[0] || "";
+        const lastname = names.slice(1).join(" ") || "";
+        await tmoApi.updateProfile({
+          customer: {
+            ...(input.email ? { email: input.email } : {}),
+            firstname,
+            lastname,
+          },
+        }, token);
+        await fetchAndSetAuthUser();
+      }
+      return { success: true };
+    }),
+    changePassword: createMutationHook(async (input: { currentPassword: string; newPassword: string }) => {
+      await tmoApi.changePassword(input.currentPassword, input.newPassword);
+      return { success: true };
+    }),
     sendSupportRequest: createMutationHook((_input: { message: string }) => ({ success: true })),
   },
 

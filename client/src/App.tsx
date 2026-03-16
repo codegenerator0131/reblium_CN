@@ -29,6 +29,7 @@ import KanbanReview from "./pages/KanbanReview";
 import AssetManagement from "./pages/AssetManagement";
 import Artists from "./pages/Artists";
 import ArtistDetail from "./pages/ArtistDetail";
+import WeChatCallback from "./pages/WeChatCallback";
 
 
 function AuthGate() {
@@ -62,6 +63,7 @@ function Router() {
       <Route path={"/asset-management"} component={AssetManagement} />
       <Route path={"/artists"} component={Artists} />
       <Route path={"/artist/:id"} component={ArtistDetail} />
+      <Route path={"/auth/wechat/callback"} component={WeChatCallback} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

@@ -1,5 +1,6 @@
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
+import tmoApi from "@/lib/tmoApi";
 import { useCallback, useEffect, useMemo } from "react";
 
 type UseAuthOptions = {
@@ -39,6 +40,17 @@ export function useAuth(options?: UseAuthOptions) {
       await utils.auth.me.invalidate();
     }
   }, [logoutMutation, utils]);
+
+  // Set up TMO API auth error handler — auto-logout on 401
+  useEffect(() => {
+    const handleAuthError = () => {
+      utils.auth.me.setData(undefined, null);
+    };
+    tmoApi.setAuthErrorHandler(handleAuthError);
+    return () => {
+      tmoApi.clearAuthErrorHandler();
+    };
+  }, [utils]);
 
   const state = useMemo(() => {
     localStorage.setItem(

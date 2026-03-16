@@ -18,10 +18,11 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { mockSignIn } from "@/lib/mockTrpc";
+import { realSignIn } from "@/lib/mockTrpc";
+import { LoginDialog } from "@/components/LoginDialog";
 import { useIsMobile } from "@/hooks/useMobile";
 import { LayoutDashboard, LogOut, PanelLeft, Users, Store, CreditCard, Settings, BookOpen, Palette, Download, ShoppingCart, Package, HelpCircle, Upload, CheckSquare, Trello, Layers, Newspaper, Sun, Moon } from "lucide-react";
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Footer } from './Footer';
@@ -124,12 +125,20 @@ function DashboardLayoutContent({
   setSidebarWidth,
 }: DashboardLayoutContentProps) {
   const { t } = useLanguage();
-  const { user, logout } = useAuth();
+  const { user, logout, refresh } = useAuth();
   const [location, setLocation] = useLocation();
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === "collapsed";
   const [isResizing, setIsResizing] = useState(false);
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+
+  const handleLoginSuccess = useCallback(async (token: string) => {
+    await realSignIn(token);
+    setIsLoginDialogOpen(false);
+    refresh();
+    setLocation("/");
+  }, [refresh, setLocation]);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const menuItems = getMenuItems(t, user?.role);
   const bottomMenuItems = getBottomMenuItems(t, user?.role);
@@ -309,7 +318,7 @@ function DashboardLayoutContent({
               </DropdownMenu>
             ) : (
               <Button
-                onClick={() => { mockSignIn(); setLocation("/"); }}
+                onClick={() => setIsLoginDialogOpen(true)}
                 className="w-full bg-cyan-500 hover:bg-cyan-600 text-black font-semibold group-data-[collapsible=icon]:w-9 group-data-[collapsible=icon]:p-0"
                 size="sm"
               >
@@ -352,9 +361,15 @@ function DashboardLayoutContent({
         <Footer />
       </SidebarInset>
       
-      <UserProfileDialog 
-        open={isProfileDialogOpen} 
-        onOpenChange={setIsProfileDialogOpen} 
+      <UserProfileDialog
+        open={isProfileDialogOpen}
+        onOpenChange={setIsProfileDialogOpen}
+      />
+
+      <LoginDialog
+        open={isLoginDialogOpen}
+        onOpenChange={setIsLoginDialogOpen}
+        onLoginSuccess={handleLoginSuccess}
       />
     </>
   );

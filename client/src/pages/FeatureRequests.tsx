@@ -138,26 +138,26 @@ export function FeatureRequests() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">{t("featureRequests")}</h1>
-            <p className="text-muted-foreground mt-2">{t("suggestNewFeatures")}</p>
+            <h1 className="text-3xl font-bold">{t("featureRequests.title")}</h1>
+            <p className="text-muted-foreground mt-2">{t("featureRequests.suggestNewFeatures")}</p>
           </div>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <Button className="gap-2">
                 <Plus className="w-4 h-4" />
-                {t("newRequest")}
+                {t("featureRequests.newRequest")}
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-md">
               <DialogHeader>
-                <DialogTitle>{editingId ? t('featureRequests.editTitle') : t("submitFeatureRequest")}</DialogTitle>
-                <DialogDescription>{editingId ? t('featureRequests.editDesc') : t("shareFeatureIdea")}</DialogDescription>
+                <DialogTitle>{editingId ? t('featureRequests.editTitle') : t("featureRequests.submitFeatureRequest")}</DialogTitle>
+                <DialogDescription>{editingId ? t('featureRequests.editDesc') : t("featureRequests.shareFeatureIdea")}</DialogDescription>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium">{t("userName")}</label>
+                  <label className="text-sm font-medium">{t("featureRequests.userName")}</label>
                   <Input
-                    placeholder={t("enterYourName")}
+                    placeholder={t("featureRequests.enterYourName")}
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                     disabled={!!editingId}
@@ -165,16 +165,16 @@ export function FeatureRequests() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">{t("title")}</label>
+                  <label className="text-sm font-medium">{t("featureRequests.requestTitle")}</label>
                   <Input
-                    placeholder={t("briefTitle")}
+                    placeholder={t("featureRequests.briefTitle")}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">{t("category")}</label>
+                  <label className="text-sm font-medium">{t("featureRequests.category")}</label>
                   <Select value={category} onValueChange={setCategory}>
                     <SelectTrigger>
                       <SelectValue />
@@ -189,9 +189,9 @@ export function FeatureRequests() {
                   </Select>
                 </div>
                 <div>
-                  <label className="text-sm font-medium">{t("description")}</label>
+                  <label className="text-sm font-medium">{t("featureRequests.description")}</label>
                   <Textarea
-                    placeholder={t("detailedDescription")}
+                    placeholder={t("featureRequests.detailedDescription")}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
@@ -200,10 +200,10 @@ export function FeatureRequests() {
                 </div>
                 <div className="flex gap-2">
                   <Button type="button" variant="outline" onClick={handleReset}>
-                    {t("cancel")}
+                    {t("common.cancel")}
                   </Button>
                   <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
-                    {createMutation.isPending || updateMutation.isPending ? t('featureRequests.submitting') : editingId ? t('featureRequests.updateRequest') : t("submitRequest")}
+                    {createMutation.isPending || updateMutation.isPending ? t('featureRequests.submitting') : editingId ? t('featureRequests.updateRequest') : t("featureRequests.submitRequest")}
                   </Button>
                 </div>
               </form>
@@ -212,11 +212,11 @@ export function FeatureRequests() {
         </div>
 
         {isLoading ? (
-          <div className="text-center py-8">{t("loading")}</div>
+          <div className="text-center py-8">{t("common.loading")}</div>
         ) : !requests || requests.length === 0 ? (
           <Card>
             <CardContent className="pt-6 text-center text-muted-foreground">
-              {t("noFeatureRequests")}
+              {t("featureRequests.noFeatureRequests")}
             </CardContent>
           </Card>
         ) : (
