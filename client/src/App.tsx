@@ -5,6 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { CartProvider } from "./contexts/CartContext";
 import Home from "./pages/Home";
 import Landing from "./pages/Landing";
 import { useAuth } from "./_core/hooks/useAuth";
@@ -44,7 +45,7 @@ function Router() {
       <Route path={"/"} component={AuthGate} />
       <Route path={"/my-avatars"} component={MyAvatars} />
       <Route path={"/store"} component={Store} />
-      <Route path={"/product/:itemId"} component={ProductDetail} />
+      <Route path={"/product/:sku"} component={ProductDetail} />
       <Route path={"/tutorials"} component={Tutorials} />
       <Route path={"/history"} component={History} />
       <Route path={"/credits"} component={Credits} />
@@ -76,8 +77,10 @@ function App() {
       <LanguageProvider>
         <ThemeProvider defaultTheme="light" switchable>
           <TooltipProvider>
-            <Toaster />
-            <Router />
+            <CartProvider>
+              <Toaster />
+              <Router />
+            </CartProvider>
           </TooltipProvider>
         </ThemeProvider>
       </LanguageProvider>

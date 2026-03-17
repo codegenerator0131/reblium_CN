@@ -58,6 +58,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useCart } from "@/contexts/CartContext";
 
 
 function ThemeToggleButton() {
@@ -126,6 +127,7 @@ function DashboardLayoutContent({
 }: DashboardLayoutContentProps) {
   const { t } = useLanguage();
   const { user, logout, refresh } = useAuth();
+  const { itemsCount } = useCart();
   const [location, setLocation] = useLocation();
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === "collapsed";
@@ -243,6 +245,11 @@ function DashboardLayoutContent({
                         />
                         {(item as any).badge && (
                           <div className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></div>
+                        )}
+                        {item.path === "/shopping-cart" && itemsCount > 0 && (
+                          <span className="absolute -top-1.5 -right-2 bg-cyan-500 text-black text-[9px] font-bold min-w-[16px] h-4 rounded-full flex items-center justify-center px-0.5">
+                            {itemsCount}
+                          </span>
                         )}
                       </div>
                       <span>{item.label}</span>
