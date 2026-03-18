@@ -62,7 +62,7 @@ function handleAuthError(): void {
 async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {},
-  token?: string,
+  token?: string
 ): Promise<T> {
   const url = `${TMO_BASE_URL}/${endpoint}`;
 
@@ -91,7 +91,7 @@ async function apiRequest<T>(
       message: `HTTP error! status: ${response.status}`,
     }));
     throw new Error(
-      errorData.message || `Request failed with status ${response.status}`,
+      errorData.message || `Request failed with status ${response.status}`
     );
   }
 
@@ -112,7 +112,7 @@ function getToken(): string | null {
 }
 
 // Helper function to strip HTML tags from text
-function stripHtml(html: string): string {
+export function stripHtml(html: string): string {
   if (!html) return "";
   return html
     .replace(/<[^>]*>/g, "")
@@ -130,15 +130,12 @@ function stripHtml(html: string): string {
 
 export async function loginWithEmail(
   email: string,
-  password: string,
+  password: string
 ): Promise<string> {
-  const response = await apiRequest<any>(
-    "rest/V1/integration/customer/token",
-    {
-      method: "POST",
-      body: JSON.stringify({ username: email, password }),
-    },
-  );
+  const response = await apiRequest<any>("rest/V1/integration/customer/token", {
+    method: "POST",
+    body: JSON.stringify({ username: email, password }),
+  });
 
   if (typeof response === "string") return response;
   if (response && typeof response === "object") {
@@ -150,7 +147,7 @@ export async function loginWithEmail(
 export async function loginWithMobile(
   mobile: string,
   password: string,
-  prefix: string,
+  prefix: string
 ): Promise<string> {
   const response = await apiRequest<any>(
     "rest/V1/customer/login/mobile_password/token",
@@ -162,7 +159,7 @@ export async function loginWithMobile(
         mobile_prefix: prefix,
         cart_id: "",
       }),
-    },
+    }
   );
 
   if (typeof response === "string") return response;
@@ -175,15 +172,12 @@ export async function loginWithMobile(
 export async function loginWithSMS(
   mobile: string,
   code: string,
-  prefix: string,
+  prefix: string
 ): Promise<string> {
-  const response = await apiRequest<any>(
-    "rest/V1/customer/login/token",
-    {
-      method: "POST",
-      body: JSON.stringify({ mobile, code, mobile_prefix: prefix, cart_id: "" }),
-    },
-  );
+  const response = await apiRequest<any>("rest/V1/customer/login/token", {
+    method: "POST",
+    body: JSON.stringify({ mobile, code, mobile_prefix: prefix, cart_id: "" }),
+  });
 
   if (typeof response === "string") return response;
   if (response && typeof response === "object") {
@@ -193,7 +187,7 @@ export async function loginWithSMS(
 }
 
 export async function register(
-  customerData: TMOCustomerRegisterRequest,
+  customerData: TMOCustomerRegisterRequest
 ): Promise<TMOCustomer> {
   return apiRequest<TMOCustomer>("rest/V1/customers/register", {
     method: "POST",
@@ -210,7 +204,7 @@ interface SMSCodeAPIResponse {
 }
 
 function parseSMSResponse(
-  data: boolean | string | SMSCodeAPIResponse,
+  data: boolean | string | SMSCodeAPIResponse
 ): SMSCodeResponse {
   if (typeof data === "boolean") return { success: data };
   if (typeof data === "string") return { success: true, message: data };
@@ -233,7 +227,7 @@ function parseSMSResponse(
 export async function sendSMSCode(
   check: 1 | 2,
   mobile: string,
-  prefix: string,
+  prefix: string
 ): Promise<SMSCodeResponse> {
   const url = `${TMO_BASE_URL}/rest/V1/customer/mobile/sendcode/${check}/${mobile}/${prefix}`;
 
@@ -264,7 +258,7 @@ export async function sendSMSCode(
         ? (data as SMSCodeAPIResponse).message
         : `Request failed with status ${response.status}`;
     throw new Error(
-      errorMessage || `Request failed with status ${response.status}`,
+      errorMessage || `Request failed with status ${response.status}`
     );
   }
 
@@ -276,27 +270,24 @@ export async function resetPassword(
   code: string,
   password: string,
   prefix: string,
-  autoLogin: boolean = true,
+  autoLogin: boolean = true
 ): Promise<string | boolean> {
-  return apiRequest<string | boolean>(
-    "rest/V1/customer/resetpassword/token",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        mobile_prefix: prefix,
-        mobile,
-        code,
-        password,
-        autoLogin,
-      }),
-    },
-  );
+  return apiRequest<string | boolean>("rest/V1/customer/resetpassword/token", {
+    method: "POST",
+    body: JSON.stringify({
+      mobile_prefix: prefix,
+      mobile,
+      code,
+      password,
+      autoLogin,
+    }),
+  });
 }
 
 export async function changePassword(
   oldPassword: string,
   newPassword: string,
-  token?: string,
+  token?: string
 ): Promise<boolean> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -310,13 +301,11 @@ export async function changePassword(
         new_password: newPassword,
       }),
     },
-    authToken,
+    authToken
   );
 }
 
-export async function getWeChatLoginUrl(
-  redirectUrl: string,
-): Promise<string> {
+export async function getWeChatLoginUrl(redirectUrl: string): Promise<string> {
   const url = `${TMO_BASE_URL}/rest/V1/wechat/qrcodeurl?redirect_url=${encodeURIComponent(redirectUrl)}`;
 
   const response = await fetch(url, {
@@ -361,13 +350,13 @@ export async function getAddress(token?: string): Promise<TMOAddress[]> {
   return apiRequest<TMOAddress[]>(
     "rest/V1/customer/address",
     { method: "GET" },
-    authToken,
+    authToken
   );
 }
 
 export async function createAddress(
   payload: any,
-  token?: string,
+  token?: string
 ): Promise<TMOAddress> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -375,13 +364,13 @@ export async function createAddress(
   return apiRequest<TMOAddress>(
     "rest/V1/customer/address",
     { method: "POST", body: JSON.stringify(payload) },
-    authToken,
+    authToken
   );
 }
 
 export async function updateAddress(
   payload: any,
-  token?: string,
+  token?: string
 ): Promise<TMOAddress> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -389,13 +378,13 @@ export async function updateAddress(
   return apiRequest<TMOAddress>(
     "rest/V1/customer/address",
     { method: "PUT", body: JSON.stringify(payload) },
-    authToken,
+    authToken
   );
 }
 
 export async function deleteAddress(
   addressId: number,
-  token?: string,
+  token?: string
 ): Promise<boolean> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -403,30 +392,29 @@ export async function deleteAddress(
   return apiRequest<boolean>(
     `rest/V1/customer/address/${addressId}`,
     { method: "DELETE" },
-    authToken,
+    authToken
   );
 }
 
 // ==================== Geo Endpoints (China) ====================
 
 export async function getRegions(): Promise<TMOGeoRegion[]> {
-  return apiRequest<TMOGeoRegion[]>(
-    "rest/V1/directory/geoinfo/of/region/CN",
-    { method: "GET" },
-  );
+  return apiRequest<TMOGeoRegion[]>("rest/V1/directory/geoinfo/of/region/CN", {
+    method: "GET",
+  });
 }
 
 export async function getCities(regionId: string): Promise<TMOGeoCity[]> {
   return apiRequest<TMOGeoCity[]>(
     `rest/V1/directory/geoinfo/of/city/${regionId}`,
-    { method: "GET" },
+    { method: "GET" }
   );
 }
 
 export async function getDistricts(cityId: string): Promise<TMOGeoDistrict[]> {
   return apiRequest<TMOGeoDistrict[]>(
     `rest/V1/directory/geoinfo/of/district/${cityId}`,
-    { method: "GET" },
+    { method: "GET" }
   );
 }
 
@@ -439,7 +427,7 @@ export async function getProfile(token?: string): Promise<TMOCustomer> {
   return apiRequest<TMOCustomer>(
     "rest/V1/customers/me",
     { method: "GET" },
-    authToken,
+    authToken
   );
 }
 
@@ -454,7 +442,7 @@ export async function updateProfile(
       custom_attributes?: Array<{ attribute_code: string; value: string }>;
     };
   },
-  token?: string,
+  token?: string
 ): Promise<TMOCustomer> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -462,7 +450,7 @@ export async function updateProfile(
   return apiRequest<TMOCustomer>(
     "rest/V1/customers/me",
     { method: "PUT", body: JSON.stringify(profileData) },
-    authToken,
+    authToken
   );
 }
 
@@ -473,13 +461,13 @@ export async function getOrders(token?: string): Promise<TMOOrdersResponse> {
   return apiRequest<TMOOrdersResponse>(
     "rest/V1/customer/orders",
     { method: "GET" },
-    authToken,
+    authToken
   );
 }
 
 export async function getOrderDetail(
   entityId: number,
-  token?: string,
+  token?: string
 ): Promise<TMOOrder> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -487,14 +475,14 @@ export async function getOrderDetail(
   return apiRequest<TMOOrder>(
     `rest/V1/customer/orders/${entityId}`,
     { method: "GET" },
-    authToken,
+    authToken
   );
 }
 
 // ==================== Product Endpoints ====================
 
 export async function getProducts(
-  searchCriteria?: TMOSearchCriteria,
+  searchCriteria?: TMOSearchCriteria
 ): Promise<TMOProductsResponse> {
   let queryString = "";
 
@@ -505,13 +493,13 @@ export async function getProducts(
       searchCriteria.filter_groups.forEach((group, groupIndex) => {
         group.filters.forEach((filter, filterIndex) => {
           params.push(
-            `searchCriteria[filter_groups][${groupIndex}][filters][${filterIndex}][field]=${encodeURIComponent(filter.field)}`,
+            `searchCriteria[filter_groups][${groupIndex}][filters][${filterIndex}][field]=${encodeURIComponent(filter.field)}`
           );
           params.push(
-            `searchCriteria[filter_groups][${groupIndex}][filters][${filterIndex}][value]=${encodeURIComponent(filter.value)}`,
+            `searchCriteria[filter_groups][${groupIndex}][filters][${filterIndex}][value]=${encodeURIComponent(filter.value)}`
           );
           params.push(
-            `searchCriteria[filter_groups][${groupIndex}][filters][${filterIndex}][condition_type]=${encodeURIComponent(filter.condition_type)}`,
+            `searchCriteria[filter_groups][${groupIndex}][filters][${filterIndex}][condition_type]=${encodeURIComponent(filter.condition_type)}`
           );
         });
       });
@@ -520,10 +508,10 @@ export async function getProducts(
     if (searchCriteria.sort_orders) {
       searchCriteria.sort_orders.forEach((sort, index) => {
         params.push(
-          `searchCriteria[sortOrders][${index}][field]=${encodeURIComponent(sort.field)}`,
+          `searchCriteria[sortOrders][${index}][field]=${encodeURIComponent(sort.field)}`
         );
         params.push(
-          `searchCriteria[sortOrders][${index}][direction]=${encodeURIComponent(sort.direction)}`,
+          `searchCriteria[sortOrders][${index}][direction]=${encodeURIComponent(sort.direction)}`
         );
       });
     }
@@ -539,24 +527,21 @@ export async function getProducts(
     queryString = params.length > 0 ? `?${params.join("&")}` : "";
   }
 
-  return apiRequest<TMOProductsResponse>(
-    `rest/V1/products${queryString}`,
-    { method: "GET" },
-  );
+  return apiRequest<TMOProductsResponse>(`rest/V1/products${queryString}`, {
+    method: "GET",
+  });
 }
 
 export async function getProductDetail(sku: string): Promise<TMOProduct> {
-  return apiRequest<TMOProduct>(
-    `rest/V1/products/${encodeURIComponent(sku)}`,
-    { method: "GET" },
-  );
+  return apiRequest<TMOProduct>(`rest/V1/products/${encodeURIComponent(sku)}`, {
+    method: "GET",
+  });
 }
 
 export async function getCategories(): Promise<TMOCategoriesResponse> {
-  return apiRequest<TMOCategoriesResponse>(
-    "rest/V1/categories",
-    { method: "GET" },
-  );
+  return apiRequest<TMOCategoriesResponse>("rest/V1/categories", {
+    method: "GET",
+  });
 }
 
 // ==================== Cart Endpoints ====================
@@ -568,7 +553,7 @@ export async function createCart(token?: string): Promise<string> {
   return apiRequest<string>(
     "rest/V1/partial-checkout/cart",
     { method: "POST" },
-    authToken,
+    authToken
   );
 }
 
@@ -579,13 +564,13 @@ export async function getCart(token?: string): Promise<TMOCart> {
   return apiRequest<TMOCart>(
     "rest/V1/partial-checkout/cart",
     { method: "GET" },
-    authToken,
+    authToken
   );
 }
 
 export async function addToCart(
   cartItem: TMOAddToCartRequest,
-  token?: string,
+  token?: string
 ): Promise<TMOCartItem> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -596,14 +581,14 @@ export async function addToCart(
       method: "POST",
       body: JSON.stringify(cartItem),
     },
-    authToken,
+    authToken
   );
 }
 
 export async function updateCartItem(
   itemId: number,
   cartItem: TMOUpdateCartItemRequest,
-  token?: string,
+  token?: string
 ): Promise<TMOCartItem> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -614,13 +599,13 @@ export async function updateCartItem(
       method: "PUT",
       body: JSON.stringify(cartItem),
     },
-    authToken,
+    authToken
   );
 }
 
 export async function deleteCartItem(
   itemId: number,
-  token?: string,
+  token?: string
 ): Promise<boolean> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -628,14 +613,14 @@ export async function deleteCartItem(
   return apiRequest<boolean>(
     `rest/V1/partial-checkout/cart/items/${itemId}`,
     { method: "DELETE" },
-    authToken,
+    authToken
   );
 }
 
 export async function checkoutAdd(
   cartId: string,
   itemIds: number[],
-  token?: string,
+  token?: string
 ): Promise<boolean> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -649,12 +634,12 @@ export async function checkoutAdd(
         item_ids: itemIds,
       }),
     },
-    authToken,
+    authToken
   );
 }
 
 export async function getPaymentMethods(
-  token?: string,
+  token?: string
 ): Promise<TMOPaymentMethod[]> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -662,7 +647,7 @@ export async function getPaymentMethods(
   return apiRequest<TMOPaymentMethod[]>(
     "rest/V1/carts/mine/payment-methods",
     { method: "GET" },
-    authToken,
+    authToken
   );
 }
 
@@ -673,13 +658,13 @@ export async function getTotals(token?: string): Promise<TMOCartTotals> {
   return apiRequest<TMOCartTotals>(
     "rest/V1/carts/mine/totals",
     { method: "GET" },
-    authToken,
+    authToken
   );
 }
 
 export async function setBillingAddress(
   billingAddress: TMOAddress,
-  token?: string,
+  token?: string
 ): Promise<number> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -690,7 +675,7 @@ export async function setBillingAddress(
       method: "POST",
       body: JSON.stringify({ address: billingAddress }),
     },
-    authToken,
+    authToken
   );
 }
 
@@ -698,7 +683,7 @@ export async function placeOrder(
   paymentMethod: string,
   billingAddress?: TMOAddress,
   shippingAddress?: TMOAddress,
-  token?: string,
+  token?: string
 ): Promise<number> {
   const authToken = token || getToken();
   if (!authToken) throw new Error("No authentication token");
@@ -722,12 +707,12 @@ export async function placeOrder(
       method: "POST",
       body: JSON.stringify(requestBody),
     },
-    authToken,
+    authToken
   );
 }
 
 export async function getAlipayQRCode(
-  orderId: string,
+  orderId: string
 ): Promise<{ qr_code: string; order_id: string }> {
   const url = `${TMO_BASE_URL}/rest/V1/alipay/qrcode/quote/${orderId}`;
   const response = await fetch(url, {
@@ -744,7 +729,7 @@ export async function getAlipayQRCode(
 }
 
 export async function getWeChatQRCode(
-  orderId: string,
+  orderId: string
 ): Promise<{ qr_code: string; order_id: string }> {
   const url = `${TMO_BASE_URL}/rest/V1/wechatpay/getqrcode/${orderId}?quoteIdIsOrderId=1`;
   const response = await fetch(url, {
@@ -764,10 +749,10 @@ export async function getWeChatQRCode(
 
 export function mapTMOCustomerToUser(customer: TMOCustomer): MappedUser {
   const mobile = customer.custom_attributes?.find(
-    (attr) => attr.attribute_code === "mobile",
+    attr => attr.attribute_code === "mobile"
   )?.value;
   const mobilePrefix = customer.custom_attributes?.find(
-    (attr) => attr.attribute_code === "mobile_prefix",
+    attr => attr.attribute_code === "mobile_prefix"
   )?.value;
 
   return {
@@ -788,16 +773,16 @@ export function mapTMOCustomerToUser(customer: TMOCustomer): MappedUser {
 
 export function mapTMOProductToMapped(
   product: TMOProduct,
-  baseImageUrl?: string,
+  baseImageUrl?: string
 ): MappedProduct {
   const descriptionHtml =
     product.custom_attributes?.find(
-      (attr) => attr.attribute_code === "description",
+      attr => attr.attribute_code === "description"
     )?.value || "";
 
   const shortDescriptionHtml =
     product.custom_attributes?.find(
-      (attr) => attr.attribute_code === "short_description",
+      attr => attr.attribute_code === "short_description"
     )?.value || "";
 
   const description = stripHtml(descriptionHtml);
@@ -805,11 +790,11 @@ export function mapTMOProductToMapped(
 
   const categoryIds =
     product.extension_attributes?.category_links?.map(
-      (link) => link.category_id,
+      link => link.category_id
     ) || [];
 
   const images =
-    product.media_gallery_entries?.map((entry) => {
+    product.media_gallery_entries?.map(entry => {
       const imageUrl = baseImageUrl
         ? `${baseImageUrl}/media/catalog/product${entry.file}`
         : entry.file;
@@ -837,7 +822,7 @@ export function mapTMOCartItemToMapped(item: TMOCartItem): MappedCartItem {
   const options: { label: string; value: string }[] = [];
 
   if (item.product_option?.extension_attributes?.custom_options) {
-    item.product_option.extension_attributes.custom_options.forEach((opt) => {
+    item.product_option.extension_attributes.custom_options.forEach(opt => {
       options.push({
         label: `Option ${opt.option_id}`,
         value: opt.option_value,
@@ -857,7 +842,7 @@ export function mapTMOCartItemToMapped(item: TMOCartItem): MappedCartItem {
 }
 
 export function mapTMOOrderToMapped(order: TMOOrder): MappedOrder {
-  const items: MappedOrderItem[] = order.items.map((item) => ({
+  const items: MappedOrderItem[] = order.items.map(item => ({
     id: item.item_id,
     sku: item.sku,
     name: item.name,
@@ -910,9 +895,10 @@ const COMMERCIAL_LICENSE_SUFFIX = "-commercial";
 
 export type LicenseType = "personal" | "commercial" | "unknown";
 
-export function parseLicenseSku(
-  sku: string,
-): { baseSku: string; licenseType: LicenseType } {
+export function parseLicenseSku(sku: string): {
+  baseSku: string;
+  licenseType: LicenseType;
+} {
   const lowerSku = sku.toLowerCase();
   if (lowerSku.endsWith(PERSONAL_LICENSE_SUFFIX)) {
     return {
@@ -929,9 +915,19 @@ export function parseLicenseSku(
 }
 
 // Order status helpers
-const ORDER_SUCCESS_STATUSES = ["complete", "processing", "paid"] as const;
-const ORDER_FAILED_STATUSES = ["canceled", "cancelled", "closed", "failed"] as const;
-const ORDER_PENDING_STATUSES = ["pending", "pending_payment", "new"] as const;
+const ORDER_SUCCESS_STATUSES = ["complete", "paid"] as const;
+const ORDER_FAILED_STATUSES = [
+  "canceled",
+  "cancelled",
+  "closed",
+  "failed",
+] as const;
+const ORDER_PENDING_STATUSES = [
+  "pending",
+  "pending_payment",
+  "processing",
+  "new",
+] as const;
 
 export function isOrderSuccess(status: string): boolean {
   return ORDER_SUCCESS_STATUSES.includes(status.toLowerCase() as any);
@@ -989,6 +985,7 @@ const tmoApi = {
   getWeChatQRCode,
   mapTMOCustomerToUser,
   mapTMOProductToMapped,
+  stripHtml,
   mapTMOCartItemToMapped,
   mapTMOOrderToMapped,
   parseLicenseSku,

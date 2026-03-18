@@ -2,7 +2,7 @@ import DashboardLayout from "@/components/DashboardLayout";
 import LicenseModal from "@/components/LicenseModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Search, ShoppingCart, X, Check } from "lucide-react";
+import { Loader2, Search, ShoppingCart, X, Check, ArrowUpCircle } from "lucide-react";
 import { BecomeArtistModal } from "@/components/BecomeArtistModal";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
@@ -40,6 +40,7 @@ export default function Store() {
   const [licenseModalOpen, setLicenseModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<MappedProduct | null>(null);
   const [addingToCart, setAddingToCart] = useState(false);
+  const [isUpgradeMode, setIsUpgradeMode] = useState(false);
 
   // Purchased products tracking
   const [purchasedProducts, setPurchasedProducts] = useState<Map<string, PurchasedProductInfo[]>>(new Map());
@@ -211,6 +212,14 @@ export default function Store() {
 
   // Open license modal for a product
   const handleChooseLicense = (product: MappedProduct) => {
+    setIsUpgradeMode(false);
+    setSelectedProduct(product);
+    setLicenseModalOpen(true);
+  };
+
+  // Handle upgrade to commercial license
+  const handleUpgradeClick = (product: MappedProduct) => {
+    setIsUpgradeMode(true);
     setSelectedProduct(product);
     setLicenseModalOpen(true);
   };
@@ -260,6 +269,7 @@ export default function Store() {
       toast.success(`${selectedProduct.name} ${t("store.addedToCart")}`);
       setLicenseModalOpen(false);
       setSelectedProduct(null);
+      setIsUpgradeMode(false);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to add item to cart";
       toast.error(errorMessage);
@@ -478,6 +488,25 @@ export default function Store() {
                         <Check className="w-3 h-3 mr-1" />
                         {t("store.owned") || "Owned"}
                       </Button>
+                    ) : purchaseStatus.canUpgrade ? (
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleUpgradeClick(product);
+                        }}
+                        disabled={addingToCart}
+                        size="sm"
+                        className="mt-2 w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold text-xs py-1 h-7"
+                      >
+                        {addingToCart && selectedProduct?.sku === product.sku ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <>
+                            <ArrowUpCircle className="w-3 h-3 mr-1" />
+                            {t("store.upgradeToCommercial")}
+                          </>
+                        )}
+                      </Button>
                     ) : (
                       <Button
                         onClick={(e) => {
@@ -582,9 +611,11 @@ export default function Store() {
         onClose={() => {
           setLicenseModalOpen(false);
           setSelectedProduct(null);
+          setIsUpgradeMode(false);
         }}
         onSelectLicense={handleSelectLicense}
         isLoading={addingToCart}
+        upgradeOnly={isUpgradeMode}
       />
     </DashboardLayout>
   );

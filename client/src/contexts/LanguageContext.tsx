@@ -160,6 +160,12 @@ const translations: Record<Language, any> = {
       personal: 'Personal',
       commercial: 'Commercial',
       credits: 'credits',
+      owned: 'Owned',
+      upgradeToCommercial: 'Upgrade to Commercial',
+      noImage: 'No Image',
+      loadError: 'Failed to load products',
+      previous: 'Previous',
+      next: 'Next',
       becomeResidentArtist: 'Become a Resident Artist',
       becomeArtistTitle: 'Become a Resident Artist',
       becomeArtistDesc: 'Join our ecosystem and start selling your high-quality 3D assets',
@@ -183,6 +189,7 @@ const translations: Record<Language, any> = {
     // License Modal
     license: {
       chooseFor: 'Choose a License for',
+      upgradeTo: 'Upgrade to Commercial License for',
       personalTitle: 'Personal License',
       commercialTitle: 'Commercial License',
       nonCommercialUse: 'For non-commercial use',
@@ -440,6 +447,7 @@ const translations: Record<Language, any> = {
       upgradeSuccess: 'License upgraded successfully!',
       alreadyCommercial: 'Already has commercial license',
       upgradeFor: 'Upgrade for',
+      searchPlaceholder: 'Search your collection...',
     },
     // Licenses
     licenses: {
@@ -920,6 +928,12 @@ const translations: Record<Language, any> = {
       personal: '个人',
       commercial: '商业',
       credits: '积分',
+      owned: '已拥有',
+      upgradeToCommercial: '升级到商业版',
+      noImage: '无图片',
+      loadError: '加载商品失败',
+      previous: '上一页',
+      next: '下一页',
       becomeResidentArtist: '成为驻地艺术家',
       becomeArtistTitle: '成为驻地艺术家',
       becomeArtistDesc: '加入我们的生态系统，开始销售您的高质量3D资产',
@@ -943,6 +957,7 @@ const translations: Record<Language, any> = {
     // License Modal
     license: {
       chooseFor: '选择许可证',
+      upgradeTo: '升级到商业许可证',
       personalTitle: '个人许可证',
       commercialTitle: '商业许可证',
       nonCommercialUse: '仅限非商业用途',
@@ -1176,6 +1191,7 @@ const translations: Record<Language, any> = {
       upgradeSuccess: '许可证升级成功！',
       alreadyCommercial: '已有商业许可证',
       upgradeFor: '升级费用',
+      searchPlaceholder: '搜索您的收藏...',
     },
     // Licenses
     licenses: {

@@ -12,6 +12,7 @@ interface LicenseModalProps {
   onClose: () => void;
   onSelectLicense: (licenseType: "personal" | "commercial") => void;
   isLoading?: boolean;
+  upgradeOnly?: boolean;
 }
 
 export default function LicenseModal({
@@ -22,6 +23,7 @@ export default function LicenseModal({
   onClose,
   onSelectLicense,
   isLoading = false,
+  upgradeOnly = false,
 }: LicenseModalProps) {
   const { t } = useLanguage();
 
@@ -29,11 +31,16 @@ export default function LicenseModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{t("license.chooseFor")} "{itemName}"</DialogTitle>
+          <DialogTitle>
+            {upgradeOnly
+              ? `${t("license.upgradeTo")} "${itemName}"`
+              : `${t("license.chooseFor")} "${itemName}"`}
+          </DialogTitle>
         </DialogHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
+        <div className={`grid grid-cols-1 ${upgradeOnly ? "" : "md:grid-cols-2"} gap-6 py-6`}>
           {/* Personal License */}
+          {!upgradeOnly && (
           <Card className="p-6 border-2 hover:border-cyan-500 transition-colors cursor-pointer">
             <div className="space-y-4">
               <div>
@@ -69,6 +76,7 @@ export default function LicenseModal({
               </Button>
             </div>
           </Card>
+          )}
 
           {/* Commercial License */}
           <Card className="p-6 border-2 border-cyan-500 bg-cyan-500/5">
