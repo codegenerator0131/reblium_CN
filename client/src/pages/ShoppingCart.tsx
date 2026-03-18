@@ -16,7 +16,6 @@ export default function ShoppingCart() {
     totals,
     itemsCount,
     removeFromCart,
-    proceedToCheckout,
   } = useCart();
 
   const handleRemoveItem = async (itemId: number) => {
@@ -28,19 +27,12 @@ export default function ShoppingCart() {
     }
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (cartItems.length === 0) {
       toast.error(t("cart.empty"));
       return;
     }
-
-    const itemIds = cartItems.map((item) => item.id);
-    const success = await proceedToCheckout(itemIds);
-    if (success) {
-      toast.success(t("common.featureSoon"));
-    } else {
-      toast.error("Checkout failed");
-    }
+    navigate("/checkout");
   };
 
   return (

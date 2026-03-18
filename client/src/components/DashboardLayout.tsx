@@ -21,7 +21,7 @@ import {
 import { realSignIn } from "@/lib/mockTrpc";
 import { LoginDialog } from "@/components/LoginDialog";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users, Store, CreditCard, Settings, BookOpen, Palette, Download, ShoppingCart, Package, HelpCircle, Upload, CheckSquare, Trello, Layers, Newspaper, Sun, Moon } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, Store, CreditCard, Settings, BookOpen, Palette, Download, ShoppingCart, Package, HelpCircle, Upload, CheckSquare, Trello, Layers, Newspaper, Sun, Moon, ClipboardList } from "lucide-react";
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -34,6 +34,7 @@ const getMenuItems = (t: (key: string) => string, userRole?: string) => [
   { icon: Package, label: t('nav.myCollection'), path: "/my-collection" },
   { icon: Store, label: t('nav.store'), path: "/store" },
   { icon: ShoppingCart, label: t('nav.cart'), path: "/shopping-cart" },
+  { icon: ClipboardList, label: t('nav.orders'), path: "/orders" },
   { icon: BookOpen, label: t('nav.tutorials'), path: "/tutorials" },
   { icon: Download, label: t('nav.updates'), path: "/updates", badge: true },
   { icon: Newspaper, label: t('nav.blog'), path: "/blog" },

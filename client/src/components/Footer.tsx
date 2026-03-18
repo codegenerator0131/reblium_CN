@@ -14,6 +14,10 @@ export function Footer() {
       <Link href="/privacy" className="hover:text-foreground transition-colors">
         {t('footer.privacy')}
       </Link>
+      <span className="opacity-30 hidden sm:inline">|</span>
+      <a href="https://www.revenuecat.com/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+        沪ICP备2021005081号-3
+      </a>
     </footer>
   );
 }

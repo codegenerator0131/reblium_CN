@@ -18,6 +18,8 @@ import Credits from "./pages/Credits";
 
 import Updates from "./pages/Updates";
 import ShoppingCart from "./pages/ShoppingCart";
+import Checkout from "./pages/Checkout";
+import Orders from "./pages/Orders";
 import ProductDetail from "./pages/ProductDetail";
 import { MyCollection } from "./pages/MyCollection";
 import Blog from "./pages/Blog";
@@ -52,6 +54,8 @@ function Router() {
 
       <Route path={"/updates"} component={Updates} />
       <Route path={"/shopping-cart"} component={ShoppingCart} />
+      <Route path={"/checkout"} component={Checkout} />
+      <Route path={"/orders"} component={Orders} />
       <Route path={"/my-collection"} component={MyCollection} />
       <Route path={"/blog"} component={Blog} />
       <Route path={"/blog/:articleId"} component={Blog} />

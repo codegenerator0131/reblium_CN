@@ -929,14 +929,25 @@ export function parseLicenseSku(
 }
 
 // Order status helpers
-const ORDER_SUCCESS_STATUSES = ["complete", "processing", "pending", "paid"] as const;
+const ORDER_SUCCESS_STATUSES = ["complete", "processing", "paid"] as const;
+const ORDER_FAILED_STATUSES = ["canceled", "cancelled", "closed", "failed"] as const;
+const ORDER_PENDING_STATUSES = ["pending", "pending_payment", "new"] as const;
 
 export function isOrderSuccess(status: string): boolean {
   return ORDER_SUCCESS_STATUSES.includes(status.toLowerCase() as any);
 }
 
+export function isOrderFailed(status: string): boolean {
+  return ORDER_FAILED_STATUSES.includes(status.toLowerCase() as any);
+}
+
+export function isOrderPending(status: string): boolean {
+  return ORDER_PENDING_STATUSES.includes(status.toLowerCase() as any);
+}
+
 // ==================== Constants ====================
 
+export const ORDER_POLLING_INTERVAL_MS = 3000;
 export const STORE_PAGE_SIZE = 20;
 
 // ==================== Default Export ====================
@@ -982,6 +993,8 @@ const tmoApi = {
   mapTMOOrderToMapped,
   parseLicenseSku,
   isOrderSuccess,
+  isOrderFailed,
+  isOrderPending,
   setTMOToken,
   removeTMOToken,
   getTMOToken,
