@@ -350,6 +350,10 @@ const translations: Record<Language, any> = {
       actualValue: 'Actual New Value',
       overpayWarning: 'You will be charged the full order total. The amount above shows what you would actually receive as new value. Consider contacting support to cancel this order.',
       proceedAnyway: 'Proceed with Payment',
+      cancelOrder: 'Cancel Order',
+      cancellingOrder: 'Cancelling order...',
+      cancelSuccess: 'Order cancelled successfully',
+      cancelFailed: 'Failed to cancel order',
     },
     // Updates
     updates: {
@@ -1130,6 +1134,10 @@ const translations: Record<Language, any> = {
       actualValue: '实际新增价值',
       overpayWarning: '您将被收取完整的订单金额。以上金额显示您实际获得的新增价值。建议联系客服取消此订单。',
       proceedAnyway: '继续支付',
+      cancelOrder: '取消订单',
+      cancellingOrder: '正在取消订单...',
+      cancelSuccess: '订单已成功取消',
+      cancelFailed: '取消订单失败',
     },
     // Updates
     updates: {

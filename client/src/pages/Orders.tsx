@@ -13,6 +13,7 @@ import {
   QrCode,
   RefreshCw,
   AlertTriangle,
+  XCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -324,6 +325,27 @@ export default function Orders() {
     }
   };
 
+  const handleCancelOrder = async (order: MappedOrder) => {
+    try {
+      const token = tmoApi.getTMOToken();
+      if (!token) {
+        toast.error(t("orders.notAuthenticated"));
+        return;
+      }
+
+      toast.loading(t("orders.cancellingOrder"));
+      await tmoApi.cancelOrder(order.id, token);
+      toast.dismiss();
+      toast.success(t("orders.cancelSuccess"));
+      setSelectedOrder(null);
+      loadOrders();
+    } catch (error) {
+      console.error("Error cancelling order:", error);
+      toast.dismiss();
+      toast.error(t("orders.cancelFailed"));
+    }
+  };
+
   const getStatusColor = (status: string) => {
     const statusLower = status.toLowerCase();
     if (statusLower.includes("complete") || statusLower.includes("processing")) {
@@ -438,12 +460,22 @@ export default function Orders() {
                       {t("orders.viewDetails")}
                     </Button>
                     {order.status.toLowerCase() === "pending" && (
-                      <Button
-                        className="bg-cyan-500 hover:bg-cyan-600 text-black"
-                        onClick={() => handleRetryPaymentClick(order)}
-                      >
-                        {t("orders.retryPayment")}
-                      </Button>
+                      <>
+                        <Button
+                          className="bg-cyan-500 hover:bg-cyan-600 text-black"
+                          onClick={() => handleRetryPaymentClick(order)}
+                        >
+                          {t("orders.retryPayment")}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className="text-red-500 border-red-500 hover:bg-red-500/10"
+                          onClick={() => handleCancelOrder(order)}
+                        >
+                          <XCircle className="h-4 w-4 mr-2" />
+                          {t("orders.cancelOrder")}
+                        </Button>
+                      </>
                     )}
                   </div>
                 </div>
@@ -616,12 +648,20 @@ export default function Orders() {
                 </div>
 
                 {selectedOrder.status.toLowerCase() === "pending" && (
-                  <div className="mt-6">
+                  <div className="mt-6 flex gap-3">
                     <Button
-                      className="w-full bg-cyan-500 hover:bg-cyan-600 text-black font-semibold"
+                      className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-black font-semibold"
                       onClick={() => handleRetryPaymentClick(selectedOrder)}
                     >
                       {t("orders.retryPayment")}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="flex-1 text-red-500 border-red-500 hover:bg-red-500/10"
+                      onClick={() => handleCancelOrder(selectedOrder)}
+                    >
+                      <XCircle className="h-4 w-4 mr-2" />
+                      {t("orders.cancelOrder")}
                     </Button>
                   </div>
                 )}

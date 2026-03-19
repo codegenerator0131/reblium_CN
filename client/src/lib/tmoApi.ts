@@ -479,6 +479,20 @@ export async function getOrderDetail(
   );
 }
 
+export async function cancelOrder(
+  orderId: number,
+  token?: string
+): Promise<boolean> {
+  const authToken = token || getToken();
+  if (!authToken) throw new Error("No authentication token");
+
+  return apiRequest<boolean>(
+    `rest/V1/customer/orders/${orderId}/cancel`,
+    { method: "POST" },
+    authToken
+  );
+}
+
 // ==================== Product Endpoints ====================
 
 export async function getProducts(
@@ -968,6 +982,7 @@ const tmoApi = {
   updateProfile,
   getOrders,
   getOrderDetail,
+  cancelOrder,
   getProducts,
   getProductDetail,
   getCategories,
