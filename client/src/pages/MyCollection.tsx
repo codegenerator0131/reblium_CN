@@ -435,6 +435,7 @@ export function MyCollection() {
         itemName={selectedAsset?.name ?? ""}
         personalPriceCNY={selectedAsset ? getPrice(selectedAsset, "personal") : 5}
         commercialPriceCNY={selectedAsset ? getPrice(selectedAsset, "commercial") : 25}
+        upgradePriceCNY={selectedAsset ? getPrice(selectedAsset, "commercial") - getPrice(selectedAsset, "personal") : 0}
         onClose={() => {
           setLicenseModalOpen(false);
           setSelectedAsset(null);

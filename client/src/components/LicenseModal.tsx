@@ -9,6 +9,7 @@ interface LicenseModalProps {
   itemName: string;
   personalPriceCNY?: number;
   commercialPriceCNY?: number;
+  upgradePriceCNY?: number;
   onClose: () => void;
   onSelectLicense: (licenseType: "personal" | "commercial") => void;
   isLoading?: boolean;
@@ -20,6 +21,7 @@ export default function LicenseModal({
   itemName,
   personalPriceCNY = 36,
   commercialPriceCNY = 180,
+  upgradePriceCNY,
   onClose,
   onSelectLicense,
   isLoading = false,
@@ -82,8 +84,18 @@ export default function LicenseModal({
           <Card className="p-6 border-2 border-cyan-500 bg-cyan-500/5">
             <div className="space-y-4">
               <div>
-                <div className="text-3xl font-bold text-cyan-400 mb-2">¥{commercialPriceCNY}</div>
-                <p className="text-sm text-muted-foreground font-semibold">{t("license.commercialTitle")}</p>
+                {upgradeOnly && upgradePriceCNY !== undefined ? (
+                  <>
+                    <div className="text-3xl font-bold text-cyan-400 mb-1">¥{upgradePriceCNY}</div>
+                    <p className="text-xs text-muted-foreground line-through mb-1">¥{commercialPriceCNY}</p>
+                    <p className="text-sm text-muted-foreground font-semibold">{t("license.upgradeToCommercial")}</p>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-3xl font-bold text-cyan-400 mb-2">¥{commercialPriceCNY}</div>
+                    <p className="text-sm text-muted-foreground font-semibold">{t("license.commercialTitle")}</p>
+                  </>
+                )}
               </div>
 
               <div className="space-y-3">

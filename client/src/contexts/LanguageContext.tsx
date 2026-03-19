@@ -202,6 +202,7 @@ const translations: Record<Language, any> = {
       teamUse: 'Team use allowed',
       buyPersonal: 'Buy Personal License',
       buyCommercial: 'Buy Commercial License',
+      upgradeToCommercial: 'Upgrade to Commercial License',
       processing: 'Processing...',
       whatsDifference: "What's the difference?",
       alreadyPurchased: 'Already purchased? Restore',
@@ -338,6 +339,8 @@ const translations: Record<Language, any> = {
       redirectingToPayment: 'Redirecting to payment...',
       paymentMethodNotSupported: 'Payment method not supported for retry',
       retryPaymentFailed: 'Failed to retry payment',
+      alreadyPurchasedWarning: 'The following items in this order have already been purchased in another order:',
+      continuePayment: 'Do you still want to proceed with payment?',
     },
     // Updates
     updates: {
@@ -970,6 +973,7 @@ const translations: Record<Language, any> = {
       teamUse: '允许团队使用',
       buyPersonal: '购买个人许可证',
       buyCommercial: '购买商业许可证',
+      upgradeToCommercial: '升级到商业许可证',
       processing: '处理中...',
       whatsDifference: '有什么区别？',
       alreadyPurchased: '已购买？恢复',
@@ -1106,6 +1110,8 @@ const translations: Record<Language, any> = {
       redirectingToPayment: '正在跳转到支付页面...',
       paymentMethodNotSupported: '该支付方式不支持重新支付',
       retryPaymentFailed: '重新支付失败',
+      alreadyPurchasedWarning: '此订单中以下商品已在其他订单中购买：',
+      continuePayment: '是否仍要继续支付？',
     },
     // Updates
     updates: {

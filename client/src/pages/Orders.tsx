@@ -189,12 +189,49 @@ export default function Orders() {
     }
   };
 
+  // Check if any items in a pending order are already purchased in other completed orders
+  const getAlreadyPurchasedItems = (pendingOrder: MappedOrder): string[] => {
+    const purchasedSkus = new Set<string>();
+
+    // Collect all SKUs from completed orders
+    orders.forEach((order) => {
+      if (order.id === pendingOrder.id) return;
+      const status = order.status.toLowerCase();
+      if (tmoApi.isOrderSuccess(status)) {
+        order.items.forEach((item) => {
+          const { baseSku } = tmoApi.parseLicenseSku(item.sku);
+          purchasedSkus.add(baseSku);
+        });
+      }
+    });
+
+    // Check which items in the pending order are already purchased
+    const duplicates: string[] = [];
+    pendingOrder.items.forEach((item) => {
+      const { baseSku } = tmoApi.parseLicenseSku(item.sku);
+      if (purchasedSkus.has(baseSku)) {
+        duplicates.push(item.name);
+      }
+    });
+
+    return duplicates;
+  };
+
   const handleRetryPayment = async (order: MappedOrder) => {
     try {
       const token = tmoApi.getTMOToken();
       if (!token) {
         toast.error(t("orders.notAuthenticated"));
         return;
+      }
+
+      // Warn about already purchased items
+      const alreadyPurchased = getAlreadyPurchasedItems(order);
+      if (alreadyPurchased.length > 0) {
+        const confirmed = window.confirm(
+          `${t("orders.alreadyPurchasedWarning")}\n\n${alreadyPurchased.join(", ")}\n\n${t("orders.continuePayment")}`
+        );
+        if (!confirmed) return;
       }
 
       toast.loading(t("orders.redirectingToPayment"));
