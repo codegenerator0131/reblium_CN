@@ -229,6 +229,12 @@ const translations: Record<Language, any> = {
       totalQty: 'Total Quantity',
       totalUSD: 'Total (USD)',
       totalCNY: 'Total (CNY)',
+      discount: 'Discount',
+      tax: 'Tax',
+      upgrade: 'Upgrade',
+      upgradeDiscount: 'Personal license deducted (already owned)',
+      upgradeDiscountLabel: 'Upgrade Discount',
+      upgradeNote: 'Upgrade items show the difference after deducting your existing personal license.',
     },
     // Checkout
     checkout: {
@@ -1009,6 +1015,12 @@ const translations: Record<Language, any> = {
       totalQty: '总数量',
       totalUSD: '总计 (美元)',
       totalCNY: '总计 (人民币)',
+      discount: '折扣',
+      tax: '税费',
+      upgrade: '升级',
+      upgradeDiscount: '已扣除个人许可证费用（已拥有）',
+      upgradeDiscountLabel: '升级优惠',
+      upgradeNote: '升级商品显示的是扣除已有个人许可证后的差价。',
     },
     // Checkout
     checkout: {
