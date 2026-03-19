@@ -128,6 +128,18 @@ export default function Orders() {
     };
   }, []);
 
+  // Handle Alipay return redirect
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tradeNo = params.get("trade_no");
+    const outTradeNo = params.get("out_trade_no");
+    if (tradeNo && outTradeNo) {
+      toast.success(t("checkout.paymentCompleted"));
+      // Clean up URL params
+      window.history.replaceState({}, "", "/orders");
+    }
+  }, [t]);
+
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/");
