@@ -12,17 +12,28 @@ import {
   ShoppingBag,
   QrCode,
   RefreshCw,
+  AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
 
 import { useAuth } from "@/_core/hooks/useAuth";
-import tmoApi, { ORDER_POLLING_INTERVAL_MS } from "@/lib/tmoApi";
+import tmoApi, { ORDER_POLLING_INTERVAL_MS, type LicenseType } from "@/lib/tmoApi";
 import { TMOOrder, MappedOrder } from "@/types/tmo";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+
+interface DuplicateItem {
+  name: string;
+  sku: string;
+  price: number;
+  pendingLicense: LicenseType;
+  ownedLicense: LicenseType;
+  deduction: number; // amount to deduct (full price if same/lower license, diff if upgrading)
+}
 
 const ORDERS_PER_PAGE = 10;
 
@@ -34,6 +45,11 @@ export default function Orders() {
   const [orders, setOrders] = useState<MappedOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Retry payment warning modal
+  const [retryWarningOpen, setRetryWarningOpen] = useState(false);
+  const [retryWarningOrder, setRetryWarningOrder] = useState<MappedOrder | null>(null);
+  const [retryWarningDuplicates, setRetryWarningDuplicates] = useState<DuplicateItem[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState<MappedOrder | null>(null);
@@ -189,49 +205,82 @@ export default function Orders() {
     }
   };
 
-  // Check if any items in a pending order are already purchased in other completed orders
-  const getAlreadyPurchasedItems = (pendingOrder: MappedOrder): string[] => {
-    const purchasedSkus = new Set<string>();
+  // Check which items in a pending order are already purchased, with license type tracking
+  const getDuplicateItems = (pendingOrder: MappedOrder): DuplicateItem[] => {
+    // Build map: baseSku -> owned license type
+    const ownedMap = new Map<string, LicenseType>();
 
-    // Collect all SKUs from completed orders
     orders.forEach((order) => {
       if (order.id === pendingOrder.id) return;
       const status = order.status.toLowerCase();
-      if (tmoApi.isOrderSuccess(status)) {
-        order.items.forEach((item) => {
-          const { baseSku } = tmoApi.parseLicenseSku(item.sku);
-          purchasedSkus.add(baseSku);
-        });
-      }
+      if (!tmoApi.isOrderSuccess(status)) return;
+
+      order.items.forEach((item) => {
+        const { baseSku, licenseType } = tmoApi.parseLicenseSku(item.sku);
+        const existing = ownedMap.get(baseSku);
+        // Keep the higher license (commercial > personal)
+        if (!existing || (licenseType === "commercial" && existing !== "commercial")) {
+          ownedMap.set(baseSku, licenseType);
+        }
+      });
     });
 
-    // Check which items in the pending order are already purchased
-    const duplicates: string[] = [];
+    const duplicates: DuplicateItem[] = [];
     pendingOrder.items.forEach((item) => {
-      const { baseSku } = tmoApi.parseLicenseSku(item.sku);
-      if (purchasedSkus.has(baseSku)) {
-        duplicates.push(item.name);
+      const { baseSku, licenseType: pendingLicense } = tmoApi.parseLicenseSku(item.sku);
+      const ownedLicense = ownedMap.get(baseSku);
+      if (!ownedLicense) return; // Not owned, no duplicate
+
+      let deduction = item.price;
+
+      if (ownedLicense === "commercial") {
+        // Already own commercial — full deduction regardless of pending license
+        deduction = item.price;
+      } else if (ownedLicense === "personal" && pendingLicense === "commercial") {
+        // Own personal, pending is commercial — only the personal portion is duplicate
+        // The upgrade difference is still valid
+        // We can't know the exact personal price from the order, so deduct nothing
+        // (user is upgrading, the full commercial price is the upgrade path)
+        deduction = 0;
+      } else {
+        // Own personal, pending is personal (or unknown) — full deduction
+        deduction = item.price;
       }
+
+      duplicates.push({
+        name: item.name,
+        sku: item.sku,
+        price: item.price,
+        pendingLicense,
+        ownedLicense,
+        deduction,
+      });
     });
 
     return duplicates;
   };
 
-  const handleRetryPayment = async (order: MappedOrder) => {
+  const handleRetryPaymentClick = (order: MappedOrder) => {
+    const duplicates = getDuplicateItems(order);
+    if (duplicates.length > 0) {
+      setRetryWarningDuplicates(duplicates);
+      setRetryWarningOrder(order);
+      setRetryWarningOpen(true);
+    } else {
+      proceedRetryPayment(order);
+    }
+  };
+
+  const proceedRetryPayment = async (order: MappedOrder) => {
+    setRetryWarningOpen(false);
+    setRetryWarningOrder(null);
+    setRetryWarningDuplicates([]);
+
     try {
       const token = tmoApi.getTMOToken();
       if (!token) {
         toast.error(t("orders.notAuthenticated"));
         return;
-      }
-
-      // Warn about already purchased items
-      const alreadyPurchased = getAlreadyPurchasedItems(order);
-      if (alreadyPurchased.length > 0) {
-        const confirmed = window.confirm(
-          `${t("orders.alreadyPurchasedWarning")}\n\n${alreadyPurchased.join(", ")}\n\n${t("orders.continuePayment")}`
-        );
-        if (!confirmed) return;
       }
 
       toast.loading(t("orders.redirectingToPayment"));
@@ -391,7 +440,7 @@ export default function Orders() {
                     {order.status.toLowerCase() === "pending" && (
                       <Button
                         className="bg-cyan-500 hover:bg-cyan-600 text-black"
-                        onClick={() => handleRetryPayment(order)}
+                        onClick={() => handleRetryPaymentClick(order)}
                       >
                         {t("orders.retryPayment")}
                       </Button>
@@ -570,7 +619,7 @@ export default function Orders() {
                   <div className="mt-6">
                     <Button
                       className="w-full bg-cyan-500 hover:bg-cyan-600 text-black font-semibold"
-                      onClick={() => handleRetryPayment(selectedOrder)}
+                      onClick={() => handleRetryPaymentClick(selectedOrder)}
                     >
                       {t("orders.retryPayment")}
                     </Button>
@@ -646,6 +695,103 @@ export default function Orders() {
           </Card>
         </div>
       )}
+
+      {/* Retry Payment Warning Modal */}
+      <Dialog open={retryWarningOpen} onOpenChange={(open) => {
+        if (!open) {
+          setRetryWarningOpen(false);
+          setRetryWarningOrder(null);
+          setRetryWarningDuplicates([]);
+        }
+      }}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-yellow-500" />
+              {t("orders.duplicateWarningTitle")}
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <p className="text-sm text-muted-foreground">
+              {t("orders.alreadyPurchasedWarning")}
+            </p>
+
+            {/* Duplicate items list */}
+            <div className="space-y-2">
+              {retryWarningDuplicates.map((item) => (
+                <div key={item.sku} className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
+                  <div>
+                    <p className="font-medium text-sm">{item.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {t("orders.ownedAs")}: {item.ownedLicense === "commercial" ? t("store.commercial") : t("store.personal")}
+                      {" → "}
+                      {t("orders.pendingAs")}: {item.pendingLicense === "commercial" ? t("store.commercial") : t("store.personal")}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    {item.deduction > 0 ? (
+                      <span className="text-red-500 text-sm font-medium">-¥{item.deduction.toFixed(2)}</span>
+                    ) : (
+                      <span className="text-green-500 text-xs">{t("orders.upgradeValid")}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Price summary */}
+            {(() => {
+              const totalDeduction = retryWarningDuplicates.reduce((sum, d) => sum + d.deduction, 0);
+              const orderTotal = retryWarningOrder?.grandTotal ?? 0;
+              const adjustedTotal = orderTotal - totalDeduction;
+
+              return (
+                <div className="border-t pt-3 space-y-1">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">{t("orders.orderTotal")}</span>
+                    <span>¥{orderTotal.toFixed(2)}</span>
+                  </div>
+                  {totalDeduction > 0 && (
+                    <div className="flex justify-between text-sm text-red-500">
+                      <span>{t("orders.alreadyPurchasedDeduction")}</span>
+                      <span>-¥{totalDeduction.toFixed(2)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-sm font-bold">
+                    <span>{t("orders.actualValue")}</span>
+                    <span>¥{adjustedTotal.toFixed(2)}</span>
+                  </div>
+                  {totalDeduction > 0 && (
+                    <p className="text-xs text-yellow-600 mt-2">
+                      {t("orders.overpayWarning")}
+                    </p>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+
+          <div className="flex gap-3 justify-end pt-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setRetryWarningOpen(false);
+                setRetryWarningOrder(null);
+                setRetryWarningDuplicates([]);
+              }}
+            >
+              {t("common.cancel")}
+            </Button>
+            <Button
+              className="bg-cyan-500 hover:bg-cyan-600 text-black"
+              onClick={() => retryWarningOrder && proceedRetryPayment(retryWarningOrder)}
+            >
+              {t("orders.proceedAnyway")}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }
