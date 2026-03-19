@@ -181,11 +181,6 @@ const translations: Record<Language, any> = {
       submitApplication: 'Submit Application',
       applicationSent: 'Application Sent!',
       applicationSentDesc: 'Thank you for your interest. Our team will review your application and contact you soon.',
-      owned: 'Owned',
-      noImage: 'No Image',
-      loadError: 'Failed to load products',
-      previous: 'Previous',
-      next: 'Next',
     },
     // License Modal
     license: {
@@ -966,11 +961,6 @@ const translations: Record<Language, any> = {
       submitApplication: '提交申请',
       applicationSent: '申请已发送！',
       applicationSentDesc: '感谢您的兴趣。我们的团队将审查您的申请并尽快与您联系。',
-      owned: '已拥有',
-      noImage: '暂无图片',
-      loadError: '加载商品失败',
-      previous: '上一页',
-      next: '下一页',
     },
     // License Modal
     license: {
