@@ -473,7 +473,13 @@ export default function Store() {
                       {product.name}
                     </p>
                     <p className="text-cyan-300 text-xs font-medium">
-                      ¥{getPersonalPrice(product).toFixed(2)}
+                      {purchaseStatus.canUpgrade ? (
+                        <>
+                          <span>{t("store.upgradeFor")} ¥{(getCommercialPrice(product) - getPersonalPrice(product)).toFixed(2)}</span>
+                        </>
+                      ) : (
+                        <>¥{getPersonalPrice(product).toFixed(2)}</>
+                      )}
                     </p>
 
                     {/* Action button based on purchase status */}
@@ -608,6 +614,7 @@ export default function Store() {
         itemName={selectedProduct?.name ?? ""}
         personalPriceCNY={selectedProduct ? getPersonalPrice(selectedProduct) : 5}
         commercialPriceCNY={selectedProduct ? getCommercialPrice(selectedProduct) : 25}
+        upgradePriceCNY={selectedProduct ? getCommercialPrice(selectedProduct) - getPersonalPrice(selectedProduct) : 0}
         onClose={() => {
           setLicenseModalOpen(false);
           setSelectedProduct(null);
