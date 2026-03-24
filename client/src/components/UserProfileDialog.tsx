@@ -471,24 +471,16 @@ export function UserProfileDialog({ open, onOpenChange }: UserProfileDialogProps
     }
     try {
       setIsSendingSupport(true);
-      // Support endpoint — will work once backend is rebuilt
-      const response = await fetch("/api/sendRequest", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: user?.email,
-          text: supportMessage,
-        }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        toast.success("Support request sent successfully");
-        setSupportMessage("");
-      } else {
-        toast.error("Failed to send support request");
+      const token = tmoApi.getTMOToken();
+      if (!token) {
+        toast.error("Not authenticated");
+        return;
       }
+      await tmoApi.submitFeedback(supportMessage, token);
+      toast.success("Support request sent successfully");
+      setSupportMessage("");
     } catch {
-      toast.error("Failed to send support request. Service unavailable.");
+      toast.error("Failed to send support request");
     } finally {
       setIsSendingSupport(false);
     }

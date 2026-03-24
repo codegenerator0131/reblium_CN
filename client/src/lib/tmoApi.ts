@@ -725,6 +725,28 @@ export async function placeOrder(
   );
 }
 
+// ==================== Support ====================
+
+export async function submitFeedback(
+  message: string,
+  token?: string,
+): Promise<any> {
+  const authToken = token || getToken();
+  if (!authToken) throw new Error("No authentication token");
+
+  const response = await apiRequest<any>(
+    "rest/V1/contact-form",
+    {
+      method: "POST",
+      body: JSON.stringify({ message }),
+    },
+    authToken,
+  );
+  return response;
+}
+
+// ==================== Payment ====================
+
 export async function getAlipayQRCode(
   orderId: string
 ): Promise<{ qr_code: string; order_id: string }> {
@@ -996,6 +1018,7 @@ const tmoApi = {
   getTotals,
   setBillingAddress,
   placeOrder,
+  submitFeedback,
   getAlipayQRCode,
   getWeChatQRCode,
   mapTMOCustomerToUser,
