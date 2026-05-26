@@ -18,6 +18,15 @@ export default function WeChatCallback() {
     const socialUid = params.get("social_uid");
     const errorParam = params.get("error");
 
+    console.log("[WeChatCallback] Full URL:", window.location.href);
+    console.log("[WeChatCallback] Params:", {
+      token,
+      social_oid: socialOid,
+      social_uid: socialUid,
+      error: errorParam,
+      existingStoredToken: tmoApi.getTMOToken() ? "present" : "none",
+    });
+
     if (errorParam) {
       setError("WeChat authentication failed. Please try again.");
       return;
