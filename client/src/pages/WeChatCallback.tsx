@@ -14,6 +14,8 @@ export default function WeChatCallback() {
       params.get("token") ||
       params.get("access_token") ||
       params.get("customer_token");
+    const socialOid = params.get("social_oid");
+    const socialUid = params.get("social_uid");
     const errorParam = params.get("error");
 
     if (errorParam) {
@@ -21,21 +23,45 @@ export default function WeChatCallback() {
       return;
     }
 
-    if (!token) {
+    if (!token && !socialOid && !socialUid) {
       setError("No authentication token received.");
       return;
     }
 
-    const cleanToken = token.replace(/^"|"$/g, "");
-    tmoApi.setTMOToken(cleanToken);
+    const handleAuth = async () => {
+      try {
+        if (token) {
+          const cleanToken = token.replace(/^"|"$/g, "");
+          tmoApi.setTMOToken(cleanToken);
 
-    realSignIn(cleanToken)
-      .then(() => {
-        navigate("/");
-      })
-      .catch(() => {
+          // Bind WeChat social attributes if provided alongside token
+          if (socialOid || socialUid) {
+            const socialAttributes: Array<{ attribute_code: string; value: string }> = [];
+            if (socialOid) socialAttributes.push({ attribute_code: "social_oid", value: socialOid });
+            if (socialUid) socialAttributes.push({ attribute_code: "social_uid", value: socialUid });
+
+            try {
+              await tmoApi.updateProfile(
+                { customer: { custom_attributes: socialAttributes } },
+                cleanToken
+              );
+            } catch {
+              // Non-fatal: sign in even if binding fails
+            }
+          }
+
+          await realSignIn(cleanToken);
+          navigate("/");
+        } else if (socialOid || socialUid) {
+          // New user: no token — redirect to landing page to sign in or register
+          navigate("/");
+        }
+      } catch {
         setError("Failed to authenticate. Please try again.");
-      });
+      }
+    };
+
+    handleAuth();
   }, [navigate]);
 
   if (error) {
