@@ -23,39 +23,43 @@ export default function WeChatCallback() {
       return;
     }
 
-    if (!token && !socialOid && !socialUid) {
+    if (!token && !socialOid && !socialUid && !tmoApi.getTMOToken()) {
       setError("No authentication token received.");
       return;
     }
 
     const handleAuth = async () => {
       try {
-        if (token) {
-          const cleanToken = token.replace(/^"|"$/g, "");
-          tmoApi.setTMOToken(cleanToken);
+        // Use token from callback URL, or fall back to the existing stored token
+        const existingToken = token
+          ? token.replace(/^"|"$/g, "")
+          : tmoApi.getTMOToken();
 
-          // Bind WeChat social attributes if provided alongside token
-          if (socialOid || socialUid) {
-            const socialAttributes: Array<{ attribute_code: string; value: string }> = [];
-            if (socialOid) socialAttributes.push({ attribute_code: "social_oid", value: socialOid });
-            if (socialUid) socialAttributes.push({ attribute_code: "social_uid", value: socialUid });
-
-            try {
-              await tmoApi.updateProfile(
-                { customer: { custom_attributes: socialAttributes } },
-                cleanToken
-              );
-            } catch {
-              // Non-fatal: sign in even if binding fails
-            }
-          }
-
-          await realSignIn(cleanToken);
-          navigate("/");
-        } else if (socialOid || socialUid) {
-          // New user: no token — redirect to landing page to sign in or register
-          navigate("/");
+        if (!existingToken) {
+          setError("No authentication token received.");
+          return;
         }
+
+        tmoApi.setTMOToken(existingToken);
+
+        // Bind WeChat social attributes via PUT /rest/V1/customers/me
+        if (socialOid || socialUid) {
+          const socialAttributes: Array<{ attribute_code: string; value: string }> = [];
+          if (socialOid) socialAttributes.push({ attribute_code: "social_oid", value: socialOid });
+          if (socialUid) socialAttributes.push({ attribute_code: "social_uid", value: socialUid });
+
+          try {
+            await tmoApi.updateProfile(
+              { customer: { custom_attributes: socialAttributes } },
+              existingToken
+            );
+          } catch {
+            // Non-fatal: proceed even if binding fails
+          }
+        }
+
+        await realSignIn(existingToken);
+        window.location.href = "/";
       } catch {
         setError("Failed to authenticate. Please try again.");
       }
