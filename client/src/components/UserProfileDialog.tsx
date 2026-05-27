@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Loader2, User, Lock, Trash2, HelpCircle, ArrowLeft, CheckCircle2, MapPin, Plus, Pencil } from "lucide-react";
+import { Loader2, User, Lock, Trash2, HelpCircle, ArrowLeft, CheckCircle2, MapPin, Plus, Pencil, Link } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -94,6 +94,9 @@ export function UserProfileDialog({ open, onOpenChange }: UserProfileDialogProps
   const [loadingRegions, setLoadingRegions] = useState(false);
   const [loadingCities, setLoadingCities] = useState(false);
   const [loadingDistricts, setLoadingDistricts] = useState(false);
+
+  // WeChat binding state
+  const [isLinkingWeChat, setIsLinkingWeChat] = useState(false);
 
   // Delete account state
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -483,6 +486,18 @@ export function UserProfileDialog({ open, onOpenChange }: UserProfileDialogProps
       toast.error("Failed to send support request");
     } finally {
       setIsSendingSupport(false);
+    }
+  };
+
+  const handleLinkWeChat = async () => {
+    try {
+      setIsLinkingWeChat(true);
+      const callbackUrl = `${window.location.origin}/auth/wechat/callback`;
+      const wechatUrl = await tmoApi.getWeChatLoginUrl(callbackUrl);
+      window.location.href = wechatUrl;
+    } catch (err: any) {
+      toast.error(err.message || "Failed to initiate WeChat linking");
+      setIsLinkingWeChat(false);
     }
   };
 
@@ -991,6 +1006,29 @@ export function UserProfileDialog({ open, onOpenChange }: UserProfileDialogProps
                   <p className="font-medium">Password changed successfully</p>
                   <Button onClick={resetPasswordFlow} className="w-full">
                     Done
+                  </Button>
+                </div>
+              )}
+
+              {/* Link WeChat - always visible */}
+              {resetStep !== "success" && (
+                <div className="pt-4 border-t space-y-2">
+                  <Label>WeChat Account</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Link your WeChat account to enable WeChat QR code login.
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={handleLinkWeChat}
+                    disabled={isLinkingWeChat}
+                    className="w-full sm:w-auto"
+                  >
+                    {isLinkingWeChat ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Link className="mr-2 h-4 w-4" />
+                    )}
+                    Link WeChat
                   </Button>
                 </div>
               )}

@@ -37,6 +37,12 @@ export default function WeChatCallback() {
       return;
     }
 
+    // Not logged in but has social params — WeChat not linked yet, show message
+    if (!token && !tmoApi.getTMOToken() && (socialOid || socialUid)) {
+      setError("Your WeChat account is not linked yet. Please log in first, then link your WeChat from Profile Settings.");
+      return;
+    }
+
     const handleAuth = async () => {
       try {
         // Use token from callback URL, or fall back to the existing stored token
@@ -78,16 +84,26 @@ export default function WeChatCallback() {
   }, [navigate]);
 
   if (error) {
+    const isUnlinked = error.includes("not linked");
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <div className="text-center space-y-4 max-w-md p-6">
           <p className="text-destructive font-medium">{error}</p>
-          <button
-            onClick={() => navigate("/")}
-            className="text-primary hover:underline text-sm"
-          >
-            Back to home
-          </button>
+          {isUnlinked ? (
+            <button
+              onClick={() => window.location.href = "/"}
+              className="text-primary hover:underline text-sm"
+            >
+              Go to Login
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate("/")}
+              className="text-primary hover:underline text-sm"
+            >
+              Back to home
+            </button>
+          )}
         </div>
       </div>
     );
