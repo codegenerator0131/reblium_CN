@@ -697,7 +697,7 @@ export default function Orders() {
 
             <div className="bg-white p-4 rounded-lg inline-block mb-4">
               <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(wechatPaymentUrl)}`}
+                src={wechatPaymentUrl}
                 alt="WeChat Payment QR Code"
                 className="w-48 h-48 mx-auto"
               />

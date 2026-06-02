@@ -766,7 +766,7 @@ export async function getAlipayQRCode(
 
 export async function getWeChatQRCode(
   orderId: string
-): Promise<{ qr_code: string; order_id: string }> {
+): Promise<{ qr_code: string; order_id: string; deep_link?: string }> {
   const url = `${TMO_BASE_URL}/rest/V1/wechatpay/getqrcode/${orderId}?quoteIdIsOrderId=1`;
   const response = await fetch(url, {
     method: "GET",
@@ -777,8 +777,20 @@ export async function getWeChatQRCode(
     throw new Error(`Failed to get WeChat payment URL: ${response.status}`);
   }
 
-  const paymentUrl = await response.text();
-  return { qr_code: paymentUrl, order_id: orderId };
+  const text = await response.text();
+  try {
+    // Response is an array: ["Ok", "Order created, QRCode generated", "data:image/png;base64,...", "NATIVE...", "weixin://..."]
+    const arr = JSON.parse(text);
+    if (Array.isArray(arr)) {
+      const base64Image = arr.find((item: string) => typeof item === "string" && item.startsWith("data:image"));
+      const deepLink = arr.find((item: string) => typeof item === "string" && item.startsWith("weixin://"));
+      if (!base64Image) throw new Error("No QR code image found in response");
+      return { qr_code: base64Image, order_id: orderId, deep_link: deepLink };
+    }
+  } catch {
+    // ignore parse error, fall through
+  }
+  return { qr_code: text, order_id: orderId };
 }
 
 // ==================== Data Mapping ====================
